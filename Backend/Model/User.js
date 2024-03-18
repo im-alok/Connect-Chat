@@ -6,6 +6,11 @@ const userSchema = new mongoose.Schema({
         required:true,
         trim:true,
     },
+    username:{
+        type:String,
+        required:true,
+        trim:true
+    },
     email:{
         type:String,
         required:true,
@@ -15,11 +20,9 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:true,
     },
-    profile:{
+    profilepic:{
             type:String,
-    },
-    status:{
-        type:String,
+            required:true,
     },
     additionalDetails:{
         type: mongoose.Schema.Types.ObjectId,
