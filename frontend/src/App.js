@@ -5,7 +5,7 @@ import Signup from "./Pages/Signup";
 function App() {
   return (
     <div className="w-screen h-screen">      
-        {/* <Login /> */}
+        <Login />
         <Signup />
     </div>
   );
