@@ -17,7 +17,7 @@ function Template({image,formType,customClasses}){
                         <Tilt>
                             <img 
                             src={image}
-                            alt='login image'
+                            alt='login page'
                             className='w-[450px] aspect-square object-cover rounded-md shadow-[10px_10px_25px_2px] shadow-richblack-900'
                             />
                         </Tilt>
