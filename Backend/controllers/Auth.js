@@ -3,6 +3,8 @@ const otp = require('../Model/OTP');
 const bcrypt = require('bcrypt');
 const Profile = require('../Model/Profile');
 const otpGenerator=require('otp-generator');
+const jwt= require('jsonwebtoken');
+require('dotenv').config()
 
 exports.sendOtp = async (req,res)=>{
     try {
@@ -63,7 +65,44 @@ exports.sendOtp = async (req,res)=>{
 
 exports.login = async(req,res)=>{
     try {
-        
+        //fetching the data
+        const {username,password} = req.body;
+        if(!username || !password){
+            return res.status(404).json({
+                success:false,
+                message:'All fields are required'
+            })
+        }
+        //check whether the user is register or not
+        const userDetails = await user.findOne({username:username}).populate('additionalDetails');
+
+        if(!userDetails){
+            return res.status(401).json({
+                success:false,
+                message:'User is not register kindly signup'
+            })
+        }
+
+        //matching the password and send the jwt token
+        if(await bcrypt.compare(password,userDetails?.password,)){
+            //creating payloads
+            const payloads ={
+                username:username,
+                email:email,
+                id:userDetails._id
+            }
+            //generating the jwt token
+            const token =  jwt.sign(payloads,process.env.JWT_SECRET,{expiresIn:'24h'})
+
+            userDetails.token = token;
+            userDetails.password = null;
+            return res.status(200).json({
+                success:true,
+                message:'user logged in successfully',
+                userDetails
+            })
+        }
+
     } catch (error) {
         console.log(error);
         return res.status(500).json({
@@ -77,6 +116,7 @@ exports.signup = async(req,res)=>{
     try {
         //fetch the data
         const {username,name,email,password,otpValue} = req.body;
+        email = email.toLowerCase();
 
         //validate the user
         if(!username || !name || !email || !password){
