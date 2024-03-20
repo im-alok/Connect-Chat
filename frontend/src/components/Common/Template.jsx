@@ -8,7 +8,7 @@ import { FaGoogle } from "react-icons/fa";
 
 function Template({image,formType,customClasses}){
     return(
-        <div className={`w-full h-full flex flex-row ${customClasses}`}>
+        <div className={` w-full h-full flex flex-row ${customClasses}`}>
             {/* for Image */}
                 <div className="w-[50%] min-h-full flex items-center justify-center bg-orange-200 " >
                     <motion.div
