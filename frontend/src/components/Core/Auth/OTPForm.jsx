@@ -80,7 +80,7 @@ function OTPForm({length = 4}){
                 <button
                 type="submit"
                 disabled={!showSubmitButton}
-                className={`${showSubmitButton?"opacity-100":'opacity-50'} bg-yellow-50 text-richblack-900 font-semibold p-2 rounded-md`}
+                className={`${showSubmitButton?"bg-yellow-50 text-richblack-900 ":'bg-richblack-700 text-richblack-25'}  font-semibold p-2 rounded-md`}
                 >
                     verify email
                 </button>

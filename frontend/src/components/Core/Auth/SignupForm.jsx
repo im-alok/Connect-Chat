@@ -96,7 +96,7 @@ function SignupForm(){
                         />
                         <div
                         onClick={()=>setShowPassword(prev =>!prev)}
-                        className='absolute right-4 top-[52%] text-2xl'
+                        className='absolute right-4 top-[52%] text-2xl cursor-pointer'
                         >
                             {
                                 showPassword ? <IoEye/> :<IoEyeOff/>
@@ -120,7 +120,7 @@ function SignupForm(){
                         />
                         <div
                         onClick={()=>setShowConfirmPassword(prev =>!prev)}
-                        className='absolute right-4 top-[52%] text-2xl'
+                        className='absolute right-4 top-[52%] text-2xl cursor-pointer'
                         >
                             {
                                 showConfirmPassword ? <IoEye/> :<IoEyeOff/>
