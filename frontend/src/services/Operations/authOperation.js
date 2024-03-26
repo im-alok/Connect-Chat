@@ -3,13 +3,14 @@ import {Auth} from "../apis";
 import {toast} from 'react-hot-toast';
 import {setLoading, setToken} from '../../slices/authSlice'
 
-export function sendOTP(email,navigate){
+export function sendOTP(email,username,navigate){
     return async(dispatch)=>{
         dispatch(setLoading(true));
         const toastId = toast.loading('Loading...');
         try {
             const response = await apiConnector('POST',Auth.sendOtp,{
-                email:email
+                email:email,
+                username:username
             });
             
             if(!response.data.success)
@@ -17,7 +18,7 @@ export function sendOTP(email,navigate){
             navigate('/verify-email');
             toast.success('Kindly Enter OTP');
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             toast.error(error.response.data.message);
         }
         dispatch(setLoading(false));
@@ -54,8 +55,8 @@ export function userRegistration({name,username,email,password},otpValue,navigat
 }
 
 export function userLogin({username,password},navigate){
-    return async (dispatch) =>{
-        dispatch(setLoading(true))
+    return async(dispatch) =>{
+        dispatch(setLoading(true));
         const toastId = toast.loading('Loading...');
         
         try {
@@ -63,7 +64,7 @@ export function userLogin({username,password},navigate){
                 username:username,
                 password:password
             });
-            if(!response?.data?.success){
+            if(!response.data.success){
                 throw new Error(response.data.message);
             }
             if(response.data){

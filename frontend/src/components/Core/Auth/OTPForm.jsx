@@ -1,8 +1,15 @@
 import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { userRegistration } from "../../../services/Operations/authOperation";
+import { useNavigate } from "react-router-dom";
 
 function OTPForm({length = 4}){
     const[otp,setOtp] = useState(new Array(length).fill(""));
     const [showSubmitButton,setShowSubmitButton] = useState(false);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const {signUpFormData} = useSelector((state)=>state.auth);
 
     const inputRefs = useRef([]);
 
@@ -53,7 +60,10 @@ function OTPForm({length = 4}){
 
     function submitHandler(e){
         e.preventDefault();
-        console.log(otp.join(""));
+        const otpValue = otp.join("");
+        dispatch(userRegistration(signUpFormData,otpValue,navigate));
+        // console.log(otp.join(""));
+        
     }
 
     return(

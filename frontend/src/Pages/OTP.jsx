@@ -2,17 +2,22 @@ import image from '../Assets/signup.jpg'
 import OTPForm from '../components/Core/Auth/OTPForm';
 import { FaArrowLeftLong } from "react-icons/fa6";
 import { BsArrowClockwise } from "react-icons/bs";
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { sendOTP } from '../services/Operations/authOperation';
 // import {useNavigate} from 'react-router-dom'
 
 function OTP(){
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const {signUpFormData} = useSelector((state)=>state.auth);
 
     function backHandler(){
-        // navigate(-1);
+        navigate(-1);
     }
 
     function resendHandler(){
-
+        dispatch(sendOTP(signUpFormData.email,signUpFormData.username,navigate));
     }
 
     return(

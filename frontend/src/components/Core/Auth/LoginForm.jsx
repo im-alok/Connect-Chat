@@ -3,12 +3,17 @@ import {useForm} from 'react-hook-form'
 import { FaArrowRightLong } from "react-icons/fa6";
 import { IoEye } from "react-icons/io5";
 import { IoEyeOff } from "react-icons/io5";
+import { userLogin } from '../../../services/Operations/authOperation';
+import {useNavigate} from 'react-router-dom'
+import { useDispatch } from 'react-redux';
 
 
 
 function LoginForm(){
 
     const [showPassword,setShowPassword] = useState(false);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const{
         register,
@@ -16,9 +21,10 @@ function LoginForm(){
         handleSubmit
     } = useForm();
 
-    async function submitHandler(data){
+    function submitHandler(data){
         //api call wiil be here
-        console.log(data)
+        dispatch(userLogin(data,navigate));
+        // console.log(data)
     }
 
     return(

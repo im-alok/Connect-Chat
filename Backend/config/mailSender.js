@@ -1,21 +1,24 @@
 const nodemailer = require('nodemailer');
+require('dotenv').config();
 
 async function mailSender(email,subject,body){
+    // console.log(email);
+    // console.log(body);
     try {
         const transporter = nodemailer.createTransport({
-            host:process.evv.HOST,
+            host:process.env.HOST,
             auth:{
-                user:process.env.USER,
-                pass:process.env.PASSWORD,
+                user:'alokranjan.projects@gmail.com',
+                pass:'ufdjvtllerrjcdka',
             }
         })
 
         //send the mail
         const info = await transporter.sendMail({
-            from:process.env.HOST_MAIL,
-            to:email,
-            subject:subject,
-            body:body
+            from:`ConnectChat | BetaVersion - Alok Ranjan`,
+            to:`${email}`,
+            subject:`${subject}`,
+            html:`${body}`,
         })
 
         console.log('mail send successfully');

@@ -8,14 +8,21 @@ require('dotenv').config()
 
 exports.sendOtp = async (req,res)=>{
     try {
-        const {email}= req.body;
-        if(!email){
+        const {email,username}= req.body;
+        if(!email || !username){
             return res.status(400).json({
                 success:false,
                 message:'Email is required'
             })
         }
-
+        //check if username is available or not
+        const userDetails = await user.findOne({username:username});
+        if(userDetails){
+            return res.status(400).json({
+                success:false,
+                message:'username is not available'
+            })
+        }
         // check for existing user
         const existingUser = await user.findOne({email});
         if(existingUser){
@@ -88,7 +95,7 @@ exports.login = async(req,res)=>{
             //creating payloads
             const payloads ={
                 username:username,
-                email:email,
+                email:userDetails.email,
                 id:userDetails._id
             }
             //generating the jwt token
@@ -104,6 +111,11 @@ exports.login = async(req,res)=>{
             })
         }
 
+        return res.status(400).json({
+            success:false,
+            message:'Incorrect password'
+        })
+
     } catch (error) {
         console.log(error);
         return res.status(500).json({
@@ -116,8 +128,10 @@ exports.login = async(req,res)=>{
 exports.signup = async(req,res)=>{
     try {
         //fetch the data
-        const {username,name,email,password,otpValue} = req.body;
+        let {username,name,email,password,otpValue} = req.body;
         email = email.toLowerCase();
+        console.log(email)
+        
 
         //validate the user
         if(!username || !name || !email || !password){
@@ -138,6 +152,7 @@ exports.signup = async(req,res)=>{
 
         //check if user are already register
         const existingUser = await user.findOne({email:email});
+        
         if(existingUser){
             return res.status(400).json({
                 success:false,

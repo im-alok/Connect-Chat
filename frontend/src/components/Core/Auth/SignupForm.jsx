@@ -3,8 +3,15 @@ import { useForm } from "react-hook-form";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { IoEye } from "react-icons/io5";
 import { IoEyeOff } from "react-icons/io5";
+import { sendOTP } from "../../../services/Operations/authOperation";
+import { useNavigate } from "react-router-dom";
+import {useDispatch} from 'react-redux'
+import { setSignUpFormData } from "../../../slices/authSlice";
 
 function SignupForm(){
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
     const {
         register,
         formState:{errors},
@@ -13,8 +20,10 @@ function SignupForm(){
     const [showPassword,setShowPassword] = useState(false)
     const [showConfirmPassword,setShowConfirmPassword] = useState(false)
 
-    function submitHandler(data){
-        console.log(data);
+    
+    async function submitHandler(data){
+        dispatch(setSignUpFormData(data));
+        dispatch(sendOTP(data.email,data.username,navigate));
     }
 
     return(
@@ -113,7 +122,7 @@ function SignupForm(){
                         </div>
                         <input 
                         type={showConfirmPassword ? 'text' :'password'}
-                        id='password'
+                        id='confirmpassword'
                         placeholder='re-enter your password'
                         {...register('confirmpassword',{required:true})}
                         className='form-style'

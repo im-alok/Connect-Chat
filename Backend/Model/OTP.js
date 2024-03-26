@@ -20,7 +20,7 @@ const otpSchema = new mongoose.Schema({
 
 async function sendVerificationMail(email,otp){
     try {
-        const response = await mailSender(email,verification | ConnectChat , otpTemplate(otp));
+        const response = await mailSender(email,`Email verification | ConnectChat` , otpTemplate(otp));
         // console.log(response);
     } catch (error) {
         console.log(error);
@@ -33,4 +33,4 @@ otpSchema.pre("save",async function(next){
     next();
 })
 
-exports.module = mongoose.model('OTP',otpSchema);
+module.exports = mongoose.model('OTP',otpSchema);
