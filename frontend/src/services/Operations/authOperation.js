@@ -1,7 +1,7 @@
 import { apiConnector } from "../apiConnector";
 import {Auth} from "../apis";
 import {toast} from 'react-hot-toast';
-import {setLoading, setToken} from '../../slices/authSlice'
+import {setLoading, setSignUpFormData, setToken} from '../../slices/authSlice'
 
 export function sendOTP(email,username,navigate){
     return async(dispatch)=>{
@@ -43,6 +43,7 @@ export function userRegistration({name,username,email,password},otpValue,navigat
                 throw new Error(response?.data?.message);
 
             toast.success('User registered successfully, Kindly Login again');
+            dispatch(setSignUpFormData(null));
             navigate('/login');
 
         } catch (error) {
