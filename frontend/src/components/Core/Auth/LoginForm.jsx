@@ -29,7 +29,7 @@ function LoginForm(){
 
     return(
         <>
-            <div className="">
+            <div className="w-full flex items-center justify-center">
 
                 
 
@@ -78,8 +78,8 @@ function LoginForm(){
                         }
                     </label>
 
-                    <button className='p-2 rounded-md bg-yellow-50 font-semibold
-                    hover:bg-yellow-200 active:scale-95'
+                    <button className='mt-5 sm:w-fit  sm:px-32 p-2 rounded-full bg-yellow-50 font-semibold self-center
+                    hover:bg-yellow-200 active:scale-95 w-11/12'
                     type='submit'
                     >
                         <div className='flex items-center gap-1 justify-center'>

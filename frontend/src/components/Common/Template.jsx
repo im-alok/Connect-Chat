@@ -8,9 +8,9 @@ import { FaGoogle } from "react-icons/fa";
 
 function Template({image,formType,customClasses}){
     return(
-        <div className={` w-full h-full flex flex-row ${customClasses}`}>
+        <div className={` w-full min-h-full flex flex-row ${customClasses}`}>
             {/* for Image */}
-                <div className="w-[50%] min-h-full flex items-center justify-center bg-orange-200 " >
+                <div className="hidden sm:flex w-[50%] min-h-full items-center justify-center bg-richblack-900 " >
                     <motion.div
                     variants={slideIn("right","spring" ,0.5 * 2 , 3)}
                     >
@@ -26,45 +26,45 @@ function Template({image,formType,customClasses}){
                 </div>
 
             {/* for form */}
-            <div className='min-w-[100%] sm:min-w-[50%] min-h-full flex flex-col gap-7 justify-center items-center bg-richblack-900'>
+            <div className='min-w-[100%] sm:min-w-[50%] min-h-full flex flex-col gap-5 justify-center items-center bg-richblack-900'>
                 {
                     formType === 'login' 
                     ?(
                         <motion.div
                         variants={slideIn("right","spring" ,0.5 * 2 , 3)}
                         >
-                                <p className='text-richblack-300 text-2xl sm:text-4xl font-semibold flex gap-2'>
-                                    Welcome Back to                                    <HighLightedText 
+                                <p className='text-richblack-300 text-xl sm:text-4xl font-semibold flex gap-2'>
+                                    <p>Welcome Back to</p>                                    <HighLightedText 
                                     text={'Connect Chat'}
                                     />
                                 </p>
                                 <p className='text-center text-sm sm:text-base  text-yellow-200'>One Single place to meet millions of people.</p>
                         </motion.div>
                     )
-                    :(<div>
+                    :(<div className='mt-10'>
                         <motion.div
                         variants={slideIn("right","spring" ,0.5 * 2 , 3)}
                         >
-                            <p className='text-richblack-300 text-2xl sm:text-4xl font-semibold flex gap-2'>
-                                Hii There, Welcome to
+                            <p className='text-richblack-300 text-lg sm:text-4xl font-semibold flex gap-2  justify-center'>
+                                <p>Hii There, Welcome to</p>
                                 <HighLightedText 
                                 text={'Connect Chat'}
                                 />
                             </p>
-                            <p className='text-center text-sm sm:text-base  text-yellow-200'>
+                            <p className='text-center text-xs sm:text-base  text-yellow-200'>
                                 One step close toward making new friend, collegues and get connected with families.
                             </p>
                         </motion.div>
                     </div>)
                 }
 
-                <div className=''>
+                <div className='w-10/12 mx-auto'>
                     {
                         formType ==='login' ? <LoginForm /> : <SignupForm />
                     }
                 </div>
 
-                <div className='flex justify-center items-center bg-[#c21515] text-richblack-5 rounded-full p-2 sm:px-20 font-semibold cursor-pointer active:scale-95'>
+                <div className=' flex justify-center items-center bg-[#c21515] text-richblack-5 rounded-full p-2  font-semibold cursor-pointer active:scale-95 mb-8 w-10/12 sm:w-fit sm:px-20'>
                     <div
                     className='flex gap-1 items-center'
                     >

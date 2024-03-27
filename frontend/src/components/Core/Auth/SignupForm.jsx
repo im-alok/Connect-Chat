@@ -29,7 +29,7 @@ function SignupForm(){
     return(
         
         <form onSubmit={handleSubmit(submitHandler)}
-            className="flex flex-col gap-5 "
+            className="w-full flex flex-col gap-5 justify-center"
             >   
                 {/* Name */}
 
@@ -39,7 +39,7 @@ function SignupForm(){
                         <span className='text-pink-200'>*</span>
                     </div>
                     <input 
-                    className="form-style w-9/12"
+                    className="form-style"
                     id="name"
                     type="text"
                     placeholder="enter your name"
@@ -62,7 +62,7 @@ function SignupForm(){
                         id='username'
                         placeholder='enter your username'
                         {...register('username',{required:true})}
-                        className='form-style w-9/12'
+                        className='form-style '
                         />
                         {
                             errors.username && (<span className='text-pink-200 text-xs'>username is required</span>)
@@ -81,7 +81,7 @@ function SignupForm(){
                         id='email'
                         placeholder='enter your email'
                         {...register('email',{required:true})}
-                        className='form-style w-9/12'
+                        className='form-style'
                         />
                         {
                             errors.email && (<span className='text-pink-200 text-xs'>email is required</span>)
@@ -90,7 +90,7 @@ function SignupForm(){
 
                 {/* password */}
 
-                <div className="h-[80px] flex gap-5 mb-3">
+                <div className="h-[80px] flex sm:flex-row flex-col gap-5 mb-24 sm:mb-3">
                     <label className='lable-style flex flex-col gap-2 relative'>
                         <div className='flex gap-1'>
                             <p>password</p>
@@ -142,7 +142,7 @@ function SignupForm(){
                 </div>
 
                 {/* submit button */}
-                <button className='mt-5 w-fit px-32 p-2 rounded-full bg-yellow-50 font-semibold self-center
+                <button className='mt-5 sm:w-fit w-full sm:px-32 p-2 rounded-full bg-yellow-50 font-semibold self-center
                     hover:bg-yellow-200 active:scale-95'
                     type='submit'
                     >

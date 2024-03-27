@@ -5,7 +5,7 @@ function Signup(){
     return(
         <Template 
         image={signup}
-        customClasses={``}
+        customClasses={`flex-row-reverse`}
         formType={`signup`}
         />
         
