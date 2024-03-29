@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const otpSchema = new mongoose.Schema({
+const messageSchema = new mongoose.Schema({
     senderId:{
         type: mongoose.Schema.Types.ObjectId,
         ref:"User",
@@ -18,9 +18,10 @@ const otpSchema = new mongoose.Schema({
     groupId:{
         type: mongoose.Schema.Types.ObjectId,
         ref:"Group",
+        default:null
     },
     
 
 },{timestamps:true});
 
-exports.module = mongoose.model('OTP',otpSchema);
+exports.module = mongoose.model('Message',messageSchema);

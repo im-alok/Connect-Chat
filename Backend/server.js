@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const dbConnect = require('./config/database');
 const userRoutes = require('./Route/userRoutes');
+const chatRoutes = require('./Route/chatRoutes');
 
 //adding middlewares to get the data
 require('dotenv').config();
@@ -22,6 +23,7 @@ console.log('db connect process is over');
 //listening the request
 //api mounting
 app.use('/api/v1/users',userRoutes);
+app.use('/api/v1/connect',chatRoutes);
 
 //listening to the port
 app.listen(4000,()=>{
