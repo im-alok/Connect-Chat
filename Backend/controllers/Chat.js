@@ -6,7 +6,7 @@ const { default: mongoose } = require('mongoose');
 exports.searchUser = async(req,res)=>{
     try {
         const id = req.user.id;
-        const {search} = req.body;
+        const {search} = req.query;
         const parameter = {
             $or:[
                 {name:{$regex:search,$options:"i"}},

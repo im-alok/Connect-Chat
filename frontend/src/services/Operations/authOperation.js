@@ -72,7 +72,7 @@ export function userLogin({username,password},navigate){
                 dispatch(setToken(response?.data?.token));
                 localStorage.setItem("token", JSON.stringify(response?.data?.token));
                 localStorage.setItem("user", JSON.stringify(response?.data?.userDetails));
-                navigate('/dashboard'); 
+                navigate('/thankyou'); 
                 toast.success(response?.data?.message)
             }
 

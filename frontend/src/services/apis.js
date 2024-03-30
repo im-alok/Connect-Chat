@@ -6,3 +6,7 @@ export const Auth = {
     signup: BASE_URL + '/users/signup',
     sendOtp: BASE_URL + '/users/verify-email'
 }
+
+export const SearchUser ={
+    searchPeople:BASE_URL + '/connect/findusers'
+}

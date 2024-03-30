@@ -1,6 +1,6 @@
 function Error(){
     return (
-        <div className="h-full flex justify-center items-center text-richblack-300 text-4xl bg-richblack-5">
+        <div className="min-h-full flex justify-center items-center text-richblack-300 text-4xl bg-richblack-5">
             <section class="page_404">
                 <div class="container">
                     <div class="row">	

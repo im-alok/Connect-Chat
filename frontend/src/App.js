@@ -6,6 +6,9 @@ import Navbar from "./components/Common/Navbar";
 import OpenRoute from "./components/Common/OpenRoute";
 import { useSelector } from "react-redux";
 import Error from "./components/Common/Error";
+import PrivateRoute from "./components/Common/PrivateRoute";
+import Search from "./Pages/Search";
+import ThankYouPage from "./components/Common/ThankYouPage";
 
 
 function App() {
@@ -37,7 +40,13 @@ function App() {
             </OpenRoute>
           } />
 
+          {/* <Route path="/search-people" element={
+            <PrivateRoute>
+              <Search />
+            </PrivateRoute>
+          } /> */}
 
+          <Route path="/thankyou" element={<ThankYouPage />} />
           <Route path="*" element={<Error/>} />
         </Routes>
       </div>
