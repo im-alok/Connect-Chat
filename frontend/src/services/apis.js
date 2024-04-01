@@ -10,3 +10,9 @@ export const Auth = {
 export const SearchUser ={
     searchPeople:BASE_URL + '/connect/findusers'
 }
+
+export const Chat ={
+    createChat : BASE_URL + '/connect/createchat',
+    fetchChat: BASE_URL + '/connect/fetchchat'
+
+}

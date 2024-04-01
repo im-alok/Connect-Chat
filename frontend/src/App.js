@@ -9,6 +9,8 @@ import Error from "./components/Common/Error";
 import PrivateRoute from "./components/Common/PrivateRoute";
 import Search from "./Pages/Search";
 import ThankYouPage from "./components/Common/ThankYouPage";
+import ChatPage from "./Pages/ChatPage";
+import ConversationPage from "./Pages/CoversationPage";
 
 
 function App() {
@@ -46,6 +48,9 @@ function App() {
             </PrivateRoute>
           } /> */}
 
+          <Route path="/" element={<ChatPage />}>
+            <Route path="/chat/:friendId" element={<ConversationPage />}/>
+          </Route>
           <Route path="/thankyou" element={<ThankYouPage />} />
           <Route path="*" element={<Error/>} />
         </Routes>

@@ -7,6 +7,13 @@ exports.searchUser = async(req,res)=>{
     try {
         const id = req.user.id;
         const {search} = req.query;
+        if(!search){
+            return res.status(404).json({
+                success:false,
+                message:'Atleast one searching parameter is required'
+            })
+        }
+        // console.log(search)
         const parameter = {
             $or:[
                 {name:{$regex:search,$options:"i"}},
@@ -14,7 +21,8 @@ exports.searchUser = async(req,res)=>{
                 {username:{$regex:search,$options:"i"}}
             ]
         };
-        const users = await user.find(parameter && {_id:{$ne:id}}).lean();
+        // && {_id:{$ne:id}}
+        const users = await user.find(parameter).find({_id:{$ne:id}}).lean();
         return res.status(200).json({
             success:true,
             message:"User found successfully",
@@ -42,7 +50,7 @@ exports.createChat = async(req,res)=>{
         }
 
         //check if there is chat already available or not
-        const userChat = await Individual.findOne({userId:userId},{friendId:friendId}).populate("userId","-password")
+        const userChat = await Individual.findOne({ userId: userId, friendId: friendId }).populate("userId","-password")
                             .populate("friendId","-password")
                             .exec();
 
@@ -89,6 +97,7 @@ exports.fetchChats = async(req,res)=>{
                                         .populate("friendId")
                                         .sort({updatedAt:-1})
                                         .exec();
+        // console.log(userChat);
         if(!userChat){
             return res.status(404).json({
                 success:false,
@@ -96,10 +105,13 @@ exports.fetchChats = async(req,res)=>{
             })
         }
 
+        const groupChat = await Group.find({members:{$elemMatch:{$eq:userId}}}).populate('members').populate('groupAdmin');
+
         return res.status(200).json({
             success:true,
             message:"fetched Syccessfully",
-            userChat
+            userChat,
+            groupChat
         })
     } catch (error) {
         console.log(error);
@@ -152,25 +164,25 @@ exports.createGroupChat = async(req,res)=>{
     }
 }
 
-exports.getAllGroupChat = async(req,res)=>{
-    try {
-        const userId = req.user.id;
-        const userFullGroupChat = await Group.find({members:{$elemMatch:{$eq:userId}}}).populate('members').populate('groupAdmin');
+// exports.getAllGroupChat = async(req,res)=>{
+//     try {
+//         const userId = req.user.id;
+//         const userFullGroupChat = await Group.find({members:{$elemMatch:{$eq:userId}}}).populate('members').populate('groupAdmin');
 
-        return res.status(200).json({
-            success:true,
-            message:'Group chat fetched successfully',
-            userFullGroupChat
-        })
+//         return res.status(200).json({
+//             success:true,
+//             message:'Group chat fetched successfully',
+//             userFullGroupChat
+//         })
 
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({
-            success:false,
-            message:'Something went wrong'
-        })
-    }
-}
+//     } catch (error) {
+//         console.log(error);
+//         return res.status(500).json({
+//             success:false,
+//             message:'Something went wrong'
+//         })
+//     }
+// }
 
 exports.renameGroup = async (req,res)=>{
     try {

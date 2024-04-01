@@ -12,6 +12,9 @@ const groupSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'User'
     },
+    profilepic:{
+        type:String
+    }
 },{timestamps:true})
 
 module.exports = mongoose.model('Group',groupSchema);

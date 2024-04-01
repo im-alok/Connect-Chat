@@ -9,12 +9,12 @@ export async function searchPeople(keyword,token){
     try {
         const response = await apiConnector('GET',SearchUser.searchPeople,null,{
             'Authorization' : 'Bearer' + token
-        },
-        null,{search:keyword});
+        },{search:keyword});
 
         
         
         if(!response.data.success){
+            toast.error(response.data.message);
             throw new Error(response.data.message);
         }
         result = response.data.users;

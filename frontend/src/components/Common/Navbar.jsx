@@ -24,7 +24,7 @@ function Navbar(){
     return(
         <div className="flex justify-between w-screen min-h-[4.9rem] bg-orange-200 sm:px-10 px-2 border-b-2 border-richblack-900 items-center">
 
-            {/* <div>
+            <div>
                 {
                     token && (
                         <div className="flex gap-2 items-center font-extrabold cursor-pointer bg-richblack-25 p-2 rounded-full px-5 hover:bg-richblack-500"
@@ -35,7 +35,7 @@ function Navbar(){
                         </div>
                     )
                 }
-            </div> */}
+            </div>
 
 
             <div className="flex flex-row gap-1 items-center">
