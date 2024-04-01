@@ -16,3 +16,7 @@ export const Chat ={
     fetchChat: BASE_URL + '/connect/fetchchat'
 
 }
+
+export const GroupChat ={
+    createGroupChat : BASE_URL + '/connect/creategroupchat'
+}

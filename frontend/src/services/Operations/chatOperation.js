@@ -1,6 +1,5 @@
-import { useSelector } from "react-redux";
 import { apiConnector } from "../apiConnector";
-import {Chat} from "../apis";
+import {Chat,GroupChat} from "../apis";
 import {toast} from 'react-hot-toast';
 import {setRender} from '../../slices/authSlice'
 
@@ -47,6 +46,30 @@ export async function fetchAllChats(token){
         result.groupChats = response.data.groupChat;
         return result;
 
+    } catch (error) {
+        console.log(error);
+        toast.error(error.response.data.message);
+    }
+}
+
+export async function createGroup(token,groupName,members,dispatch){
+    try {
+        const response = await apiConnector('POST',GroupChat.createGroupChat,
+        {
+            groupName:groupName,
+            members:members
+        },
+        {
+            "Authorization" : "Bearer" + token
+        }
+        );
+
+        if(!response.data.success)
+            throw new Error(response.data.message);
+        let result = response.data.groupChatDetails;
+        dispatch(setRender());
+        return result;
+        
     } catch (error) {
         console.log(error);
         toast.error(error.response.data.message);

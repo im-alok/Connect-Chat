@@ -105,7 +105,7 @@ exports.fetchChats = async(req,res)=>{
             })
         }
 
-        const groupChat = await Group.find({members:{$elemMatch:{$eq:userId}}}).populate('members').populate('groupAdmin');
+        const groupChat = await Group.find({members:{$elemMatch:{$eq:userId}}}).populate('members').populate('groupAdmin').sort({updatedAt:-1}).exec();
 
         return res.status(200).json({
             success:true,
@@ -141,7 +141,8 @@ exports.createGroupChat = async(req,res)=>{
         const groupChat = await Group.create({
             groupName:groupName,
             members:users,
-            groupAdmin:userId
+            groupAdmin:userId,
+            profilepic:`https://api.dicebear.com/5.x/initials/svg?seed=${groupName}`
         });
 
         const groupChatDetails = await Group.findById(groupChat._id)
