@@ -1,22 +1,30 @@
 import { useEffect, useState } from "react";
-import { menuLinks } from "../../../Utils/data";
+import { menuLinks } from "../../../Utils/Data";
 import Chats from "./Chats";
 import { useSelector } from "react-redux";
 import { fetchAllChats } from "../../../services/Operations/chatOperation";
 import Groups from "./Groups";
+import { useParams } from "react-router-dom";
 
 function Sidebar(){
     const [menu,setMenu] = useState('Chats');
     const [chatData,setChatData] = useState([]);
     const [groupData,setGroupData] = useState([]);
     const{render,token} = useSelector((state)=>state.auth);
-
+    const {user} = useSelector((state)=>state.profile);
     useEffect(()=>{
         async function fetchChats(){
             const response = await fetchAllChats(token);
             // console.log(response);
             if(response){
-                setChatData(response.userChats);
+                const userChat = response.userChats.map((chat)=>(
+                    {
+                        ...chat,users:chat.users.filter((people)=>people._id!=user._id)
+                    }
+                ))
+                console.log(userChat);
+                // console.log(response.userChats);
+                setChatData(userChat);
                 setGroupData(response.groupChats);
             }
         }
@@ -40,7 +48,7 @@ function Sidebar(){
             </div>
 
             {
-                menu === 'Chats' ? (<Chats data={chatData}/>) : menu === 'Groups'?(<Groups data={groupData}/>):<Chats />
+                menu === 'Chats' ? (<Chats data={chatData}/>) : menu === 'Groups'?(<Groups data={groupData}/>):("")
             }
         </div>
     )

@@ -38,9 +38,10 @@ function Navbar(){
             </div>
 
 
-            <div className="flex flex-row gap-1 items-center">
+            <div className="flex flex-row gap-2 items-center">
                 <p className="hidden sm:flex sm:text-6xl">&#169;</p>
                 <div className="font-bold text-xl sm:text-3xl text-richblack-900">Connect Chat</div>
+                <div className="loaders"></div>
             </div>
 
             <div className="flex gap-2 items-center">

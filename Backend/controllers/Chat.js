@@ -50,10 +50,16 @@ exports.createChat = async(req,res)=>{
         }
 
         //check if there is chat already available or not
-        const userChat = await Individual.findOne({ userId: userId, friendId: friendId }).populate("userId","-password")
-                            .populate("friendId","-password")
+        const userChat = await Individual.findOne({
+            $and:[
+                {users:{$elemMatch:{$eq:userId}}},
+                {users:{$elemMatch:{$eq:friendId}}}
+            ]
+        })
+                            .populate("users","-password")
                             .exec();
-
+        
+        // console.log(userChat);
         if(userChat){
             return res.status(200).json({
                 success:true,
@@ -63,17 +69,18 @@ exports.createChat = async(req,res)=>{
         }
 
         //create chat with that user
-        const newUserChat = await Individual.create({
-            userId:userId,
-            friendId:friendId,
-            latestMessage:null
-        });
+        const newUserPayloads= {
+            latestMessage:null,
+            users:[userId,friendId]
+        }
+        const newUserChat = await Individual.create(newUserPayloads);
 
         const newUserFullChat = await Individual.findById(newUserChat._id)
-                            .populate("userId","-password")
-                            .populate("friendId","-password")
+                            .populate("users","-password")
                             .exec();
 
+        
+        // console.log(newUserFullChat);
         //return the response
         return res.status(200).json({
             success:true,
@@ -93,8 +100,9 @@ exports.createChat = async(req,res)=>{
 exports.fetchChats = async(req,res)=>{
     try {
         const userId = req.user.id;
-        const userChat = await Individual.find({userId:userId})
-                                        .populate("friendId")
+        const userChat = await Individual.find({users:{$elemMatch:{$eq:userId}}})
+                                        .populate("users")
+                                        .populate("latestMessage")
                                         .sort({updatedAt:-1})
                                         .exec();
         // console.log(userChat);
@@ -109,7 +117,7 @@ exports.fetchChats = async(req,res)=>{
 
         return res.status(200).json({
             success:true,
-            message:"fetched Syccessfully",
+            message:"fetched Successfully",
             userChat,
             groupChat
         })

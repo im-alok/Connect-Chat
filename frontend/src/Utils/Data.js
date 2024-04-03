@@ -1,14 +1,15 @@
 export const menuLinks = [
     {
         id:1,
-        name:"Chats",
+        name:'Chats'
     },
     {
         id:2,
-        name:"Groups",
+        name:'Groups'
     },
     {
-        id:3,
-        name:"Calls",
+        id:1,
+        name:'Calls'
     },
+
 ]

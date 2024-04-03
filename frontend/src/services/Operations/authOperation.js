@@ -2,6 +2,7 @@ import { apiConnector } from "../apiConnector";
 import {Auth} from "../apis";
 import {toast} from 'react-hot-toast';
 import {setLoading, setSignUpFormData, setToken} from '../../slices/authSlice'
+import { setUser } from "../../slices/profileSlice";
 
 export function sendOTP(email,username,navigate){
     return async(dispatch)=>{
@@ -70,6 +71,7 @@ export function userLogin({username,password},navigate){
             }
             if(response.data){
                 dispatch(setToken(response?.data?.token));
+                dispatch(setUser(response.data.userDetails));
                 localStorage.setItem("token", JSON.stringify(response?.data?.token));
                 localStorage.setItem("user", JSON.stringify(response?.data?.userDetails));
                 navigate('/dashboard'); 

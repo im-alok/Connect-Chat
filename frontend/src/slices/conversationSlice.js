@@ -14,5 +14,5 @@ const conversationSlice = createSlice({
     }
 })
 
-export const {setShowCreateGroupField} = conversationSlice.actions;
+export const {setShowCreateGroupField,setMessageDetails} = conversationSlice.actions;
 export default conversationSlice.reducer;

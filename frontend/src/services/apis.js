@@ -20,3 +20,8 @@ export const Chat ={
 export const GroupChat ={
     createGroupChat : BASE_URL + '/connect/creategroupchat'
 }
+
+export const Message ={
+    sendMessage:BASE_URL + '/message/sendmessage',
+    fetchAllConversation: BASE_URL + "/message/fetchallmessage"
+}

@@ -22,7 +22,7 @@ function Groups({data}){
             </div>
 
             {
-                data.length === 0 ? (<div className="text-xl text-richblack-900 font-semibold">No groups found</div>)
+                data.length === 0 ? (<div className="text-xl text-richblack-900 font-semibold">No groups found, Create by clicking on 👆 button</div>)
                 :(
                     <div className="flex flex-col gap-5 ">
                         {

@@ -14,6 +14,11 @@ const groupSchema = new mongoose.Schema({
     },
     profilepic:{
         type:String
+    },
+    latestMessage:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Message",
+        default:null
     }
 },{timestamps:true})
 

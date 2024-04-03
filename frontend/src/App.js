@@ -11,6 +11,7 @@ import Search from "./Pages/Search";
 import ThankYouPage from "./components/Common/ThankYouPage";
 import ChatPage from "./Pages/ChatPage";
 import ConversationPage from "./Pages/CoversationPage";
+import LandingPage from "./components/Common/landingPage";
 
 
 function App() {
@@ -49,7 +50,8 @@ function App() {
           } /> */}
 
           <Route path="/" element={<ChatPage />}>
-            <Route path="/chat/:friendId" element={<ConversationPage />}/>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/chat/:chatId" element={<ConversationPage />}/>
           </Route>
           <Route path="/thankyou" element={<ThankYouPage />} />
           <Route path="*" element={<Error/>} />

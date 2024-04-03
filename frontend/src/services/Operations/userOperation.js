@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { apiConnector } from "../apiConnector";
-import {SearchUser} from "../apis";
+import {Message, SearchUser} from "../apis";
 import {toast} from 'react-hot-toast';
 
 
@@ -24,5 +24,28 @@ export async function searchPeople(keyword,token){
     } catch (error) {
         console.log(error);
         toast.error(error.response.data.message);
+    }
+}
+
+export async function sendMessage(chatId,message,token){
+    let result={};
+    try {
+        const response = await apiConnector('POST',Message.sendMessage,
+        {
+            message:message,
+            chatId:chatId
+        },
+        {
+            "Authorization" : 'Bearer' + token
+        }
+        );
+
+        if(!response.data.success)
+            throw new Error(response.data.message);
+        // console.log(response);
+        result = response.data.deliverMessage
+        return result;
+    } catch (error) {
+        console.log(error);
     }
 }

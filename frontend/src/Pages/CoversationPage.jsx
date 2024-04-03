@@ -1,5 +1,7 @@
 import { MdVideoCall } from "react-icons/md";
 import { IoCallSharp } from "react-icons/io5";
+import SendMessage from "../components/Core/Conversation/SendMessage";
+import AllMessage from "../components/Core/Conversation/AllMessage";
 
 function ConversationPage(){
     return(
@@ -12,8 +14,10 @@ function ConversationPage(){
 
                 </div>
             </div>
-
-            {/* <SendMessage /> */}
+            <div className="p-5 ">
+                <AllMessage />
+            </div>
+            <SendMessage />
 
         </div>
     )
