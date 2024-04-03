@@ -8,7 +8,7 @@ exports.sendMessage = async(req,res)=>{
         const {message,chatId,groupId} = req.body;
         const userId = req.user.id;
 
-        if(chatId!=null || chatId!=undefined || chatId!=""){
+        if(chatId!=null && chatId!=undefined && chatId!=""){
             if(!message,!chatId){
                 return res.status(400).json({
                     success:false,
@@ -41,8 +41,9 @@ exports.sendMessage = async(req,res)=>{
             })
         }
 
-        else if(groupId!=null || groupId!=undefined || groupId!=""){
-            if(!message,!groupId){
+        else if(groupId!=null && groupId!=undefined && groupId!=""){
+            // console.log(groupId)
+            if(!message||!groupId){
                 return res.status(400).json({
                     success:false,
                     message:'All fields are required'
@@ -69,7 +70,9 @@ exports.sendMessage = async(req,res)=>{
     
             return res.status(200).json({
                 success:true,
-                message:'Message delivered successfully'
+                message:'Message delivered successfully',
+                deliverMessage
+                
             })
         }
 
@@ -132,8 +135,8 @@ exports.fetchMessage = async(req,res)=>{
 
 exports.fetchGroupMessage = async(req,res)=>{
     try {
-        const {groupId} = req.query;
-        if(!groupId){
+        const {chatId} = req.query;
+        if(!chatId){
             return res.status(400).json({
                 success:false,
                 message:'groupId is required'
@@ -143,24 +146,24 @@ exports.fetchGroupMessage = async(req,res)=>{
         if(!groupDetails){
             return res.status(404).json({
                 success:false,
-                message:'invalid chat Id'
+                message:'invalid group Id'
             })
         }
 
         //finding all the message
-        const Message = await Message.find({groupId:groupDetails._id})
-                                .populate("senderId","name,profilepic,username")
-                                .exec().sort();
-        if(!Message){
+        const messageDetails = await Message.find({groupId:groupDetails._id})
+                                .populate("senderId","-password").sort()
+                                .exec();
+        if(!messageDetails){
             return res.status(400).json({
                 success:false,
                 message:"No new message is founded"
             })
         }
         return res.status(200).json({
-            success:false,
+            success:true,
             message:'data fetched successfully',
-            Message
+            messageDetails
         })
     } catch (error) {
         console.log(error);

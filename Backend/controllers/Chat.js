@@ -113,7 +113,7 @@ exports.fetchChats = async(req,res)=>{
             })
         }
 
-        const groupChat = await Group.find({members:{$elemMatch:{$eq:userId}}}).populate('members').populate('groupAdmin').sort({updatedAt:-1}).exec();
+        const groupChat = await Group.find({members:{$elemMatch:{$eq:userId}}}).populate('members').populate('groupAdmin').populate("latestMessage").sort({updatedAt:-1}).exec();
 
         return res.status(200).json({
             success:true,
