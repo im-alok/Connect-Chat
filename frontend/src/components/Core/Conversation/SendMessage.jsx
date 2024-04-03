@@ -7,7 +7,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setMessageDetails } from '../../../slices/conversationSlice';
 
 function SendMessage(){
-    const {chatId} = useParams();
+    const {chatId,groupStatus} = useParams();
+    console.log(groupStatus);
     const {
         register,
         setValue,
@@ -26,7 +27,12 @@ function SendMessage(){
             return;
         }
             
-        const response = sendMessage(chatId,getValues().sendMessage,token);
+        if(groupStatus){
+            const response = sendMessage(chatId,getValues().sendMessage,token,null);
+        }
+        else{
+            const response = sendMessage(null,getValues().sendMessage,token,chatId);
+        }
         setValue('sendMessage',"");
         setLoading(false);
     }

@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import CreateGroupPage from "./CreateGroupPage";
 import { useDispatch, useSelector } from "react-redux";
 import { setShowCreateGroupField } from "../../../slices/conversationSlice";
 
 function Groups({data}){
     // console.log(data);
-    const [active,setActive] = useState();
+    const {chatId} = useParams();
+    const [active,setActive] = useState(chatId);
     const navigate = useNavigate();
     const {showCreateGroupField} = useSelector((state)=>state.conversation);
     const dispatch = useDispatch();
@@ -31,7 +32,7 @@ function Groups({data}){
                                 className={`flex gap-2 items-center cursor-pointer p-2 hover:bg-[#f29a2e] py-3 rounded-md ${active === group._id ? "shadow-[0px_0px_2px_2px] shadow-pink-800":""}`}
                                 onClick={()=>{
                                     setActive(group._id)
-                                    // navigate(`/chat/${group.friendId._id}`)
+                                    navigate(`/chat/${group._id}/group/${true}`)
                                 }}  
                                 >
                                     <img 
@@ -40,7 +41,7 @@ function Groups({data}){
                                     />
                                     <div className="">
                                         <p className="text-lg font-semibold">{group.groupName}</p>
-                                        <p className="text-sm text-semibold text-richblack-700">{group.latestMessage ? (group.latestMessage):("Click to start the conversation")}</p>
+                                        <p className="text-sm text-semibold text-richblack-700">{group?.latestMessage?.message ? (group?.latestMessage?.message):("Click to start the conversation")}</p>
                                     </div>
                                 </div>
                             ))

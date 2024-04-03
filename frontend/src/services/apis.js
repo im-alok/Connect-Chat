@@ -23,5 +23,6 @@ export const GroupChat ={
 
 export const Message ={
     sendMessage:BASE_URL + '/message/sendmessage',
-    fetchAllConversation: BASE_URL + "/message/fetchallmessage"
+    fetchAllConversation: BASE_URL + "/message/fetchallmessage",
+    fetchGroupConversation : BASE_URL + '/message/fetchgroupmessage'
 }

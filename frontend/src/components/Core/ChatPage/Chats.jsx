@@ -25,7 +25,7 @@ function Chats({data}){
                             className={`flex gap-2 items-center cursor-pointer p-2 hover:bg-[#f29a2e] py-3 rounded-md ${active === people._id ? "shadow-[0px_0px_2px_2px] shadow-pink-800":""}`}
                             onClick={()=>{
                                 setActive(people._id)
-                                navigate(`/chat/${people._id}`)
+                                navigate(`/chat/${people._id}/group/${false}`)
                             }}  
                             >
                                 <img 

@@ -27,13 +27,14 @@ export async function searchPeople(keyword,token){
     }
 }
 
-export async function sendMessage(chatId,message,token){
+export async function sendMessage(chatId,message,token,groupId){
     let result={};
     try {
         const response = await apiConnector('POST',Message.sendMessage,
         {
             message:message,
-            chatId:chatId
+            chatId:chatId,
+            groupId:groupId
         },
         {
             "Authorization" : 'Bearer' + token

@@ -8,11 +8,12 @@ import { dateFormatter, timeFormatter } from "../../../Utils/dateAndTimeFormatte
 
 function AllMessage(){
 
-    const {chatId} = useParams();
+    const {chatId,groupStatus} = useParams();
     const {token} = useSelector((state)=>state.auth);
     const  [conversation,setConversation] = useState([]);
     const location = useLocation();
     const {user} = useSelector((state)=>state.profile);
+    console.log(groupStatus)
 
     useEffect(()=>{
         async function fetchConversation(){
@@ -31,7 +32,25 @@ function AllMessage(){
                 console.log(error)
             }
         }
-        fetchConversation();
+
+        async function fetchGroupConversation(){
+            try {
+                const response = await apiConnector('GET',Message.fetchGroupConversation,null,
+                {
+                    "Authorization" : 'Bearer' + token
+                },{chatId:chatId}
+                );
+    
+                if(!response.data.success)
+                    throw new Error(response.data.message);
+                console.log(response.data.messageDetails);
+                setConversation(response.data.messageDetails)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        groupStatus ? fetchGroupConversation() : fetchConversation()
     },[chatId,location.pathname]);
 
     return(

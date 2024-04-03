@@ -43,15 +43,9 @@ function App() {
             </OpenRoute>
           } />
 
-          {/* <Route path="/search-people" element={
-            <PrivateRoute>
-              <Search />
-            </PrivateRoute>
-          } /> */}
-
-          <Route path="/" element={<ChatPage />}>
+          <Route path="/" element={<PrivateRoute><ChatPage /></PrivateRoute>}>
             <Route path="/" element={<LandingPage />} />
-            <Route path="/chat/:chatId" element={<ConversationPage />}/>
+            <Route path="/chat/:chatId/group/:groupStatus" element={<ConversationPage />}/>
           </Route>
           <Route path="/thankyou" element={<ThankYouPage />} />
           <Route path="*" element={<Error/>} />

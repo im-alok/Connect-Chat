@@ -4,7 +4,7 @@ import Chats from "./Chats";
 import { useSelector } from "react-redux";
 import { fetchAllChats } from "../../../services/Operations/chatOperation";
 import Groups from "./Groups";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function Sidebar(){
     const [menu,setMenu] = useState('Chats');
@@ -12,6 +12,7 @@ function Sidebar(){
     const [groupData,setGroupData] = useState([]);
     const{render,token} = useSelector((state)=>state.auth);
     const {user} = useSelector((state)=>state.profile);
+    const navigate = useNavigate();
     useEffect(()=>{
         async function fetchChats(){
             const response = await fetchAllChats(token);
@@ -22,7 +23,7 @@ function Sidebar(){
                         ...chat,users:chat.users.filter((people)=>people._id!=user._id)
                     }
                 ))
-                console.log(userChat);
+                // console.log(userChat);
                 // console.log(response.userChats);
                 setChatData(userChat);
                 setGroupData(response.groupChats);
@@ -38,7 +39,9 @@ function Sidebar(){
                 {
                     menuLinks.map((link)=>(
                         <div key={link.id}
-                        onClick={()=>setMenu(link.name)}
+                        onClick={()=>{setMenu(link.name)
+                        navigate('/');
+                        }}
                         className={`text-lg font-semibold ${menu === link.name ? " underline text-yellow-50" : "text-richblack-25"} cursor-pointer`}
                         >
                             {link.name}
