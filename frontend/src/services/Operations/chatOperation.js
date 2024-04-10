@@ -41,7 +41,6 @@ export async function fetchAllChats(token){
 
         if(!response.data.success)
             throw new Error(response.data.message);
-
         result.userChats = response.data.userChat;
         result.groupChats = response.data.groupChat;
         return result;
@@ -57,7 +56,7 @@ export async function createGroup(token,groupName,members,dispatch){
         const response = await apiConnector('POST',GroupChat.createGroupChat,
         {
             groupName:groupName,
-            members:members
+            users:members
         },
         {
             "Authorization" : "Bearer" + token
@@ -68,6 +67,35 @@ export async function createGroup(token,groupName,members,dispatch){
             throw new Error(response.data.message);
         let result = response.data.groupChatDetails;
         dispatch(setRender());
+        return result;
+        
+    } catch (error) {
+        console.log(error);
+        toast.error(error.response.data.message);
+    }
+}
+
+export async function editGroup(token,groupName,members,groupId,dispatch){
+    try {
+        const response = await apiConnector('PUT',GroupChat.editGroupChat,
+        {
+            groupName:groupName,
+            users:members,
+            groupId:groupId
+        },
+        {
+            "Authorization" : "Bearer" + token
+        }
+        );
+
+        if(!response.data.success){
+            toast.error(response.data.message);
+            throw new Error(response.data.message);
+        }
+            
+        let result = response.data.groupChatDetails;
+        dispatch(setRender());
+        toast.success(response.data.message);
         return result;
         
     } catch (error) {

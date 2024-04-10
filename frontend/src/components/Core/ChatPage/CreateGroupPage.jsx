@@ -7,10 +7,11 @@ import { searchPeople } from '../../../services/Operations/userOperation';
 import { MdCancel } from "react-icons/md";
 import { FaTrash } from "react-icons/fa";
 import ButtonIcon from '../../Common/ButtonIcon';
-import { createGroup } from '../../../services/Operations/chatOperation';
+import { createGroup, editGroup } from '../../../services/Operations/chatOperation';
 import toast from 'react-hot-toast';
+import { useParams } from 'react-router-dom';
 
-function CreateGroupPage({groupData , isEdit}){
+function CreateGroupPage({groupData , isEdit=false}){
     const [loading,setLoading] = useState(false);
     const {token} = useSelector((state)=>state.auth);
     const [searchData,setSearchData] = useState([]);
@@ -18,7 +19,7 @@ function CreateGroupPage({groupData , isEdit}){
     // console.log(members)
     // console.log(loading)
 
-    
+    const {groupId} = useParams();
     const dispatch = useDispatch();
     const {
         getValues,
@@ -27,6 +28,14 @@ function CreateGroupPage({groupData , isEdit}){
         formState:{errors},
         handleSubmit
     } = useForm();
+
+    useEffect(()=>{
+        if(isEdit){
+            setValue('groupName',groupData.groupName);
+            setMembers(groupData.users);
+
+        }
+    },[])
 
     async function changeHandler(e){
         const searchKeyword = e.target.value;
@@ -43,11 +52,11 @@ function CreateGroupPage({groupData , isEdit}){
     }
 
     function clickHandler(user){
-        // setSearchData([]);
         const temp = [...members];
         temp.push(user);
         setMembers(temp);
-        // document.getElementById('searchBar').value = "";
+        document.getElementById('searchBar').value = "";
+        setSearchData([]);
     }
 
     function cancelHandler(){
@@ -85,6 +94,30 @@ function CreateGroupPage({groupData , isEdit}){
         
     }
 
+    async function editHandler(e){
+        if(members.length <=1){
+            toast.error('please select atleast 2 member to create group');
+            return;
+        }
+        const values = getValues();
+        
+        setLoading(true);
+        const groupMembers = members.map((member)=>member._id);
+        // console.log(groupMembers);
+        const response = await editGroup(token,values.groupName,JSON.stringify(groupMembers),groupId,dispatch);
+        if(response){
+            toast.success('group created');
+            setValue('groupName',"");
+            setMembers([]);
+
+        }
+        // console.log(JSON.stringify(groupMembers));
+        setLoading(false);
+        
+        dispatch(setShowCreateGroupField(false));
+        
+    }
+
     return(
         <div className="fixed inset-0 z-[1000] !mt-0 grid place-items-center overflow-auto bg-richblack-900 bg-opacity-50 backdrop-blur-sm">
             <div className='bg-richblack-900 max-w-[600px] min-w-[600px] min-h-[650px] rounded-md flex flex-col gap-2 p-7 border border-yellow-50 shadow-[0px_0px_15px_5px] shadow-richblue-100'>
@@ -102,7 +135,7 @@ function CreateGroupPage({groupData , isEdit}){
 
                 <form
                 className='flex flex-col gap-5'
-                onSubmit={handleSubmit(submitHandler)}
+                onSubmit={!isEdit ? (handleSubmit(submitHandler)) : (handleSubmit(editHandler))}
                 >  
                     {/* groupName */}
 
@@ -215,14 +248,28 @@ function CreateGroupPage({groupData , isEdit}){
 
                     {/* submit button */}
                     <div>
-                        
-                        <button
-                        type='submit'
-                        disabled={loading}
-                        className='flex items-center bg-yellow-50 cursor-pointer gap-x-2 rounded-md py-2 px-5 font-semibold text-richblack-900 w-full justify-center active:scale-90'
-                        >
-                            create group
-                        </button>
+                        {
+                            !isEdit ? (
+                                <button
+                                type='submit'
+                                disabled={loading}
+                                className='flex items-center bg-yellow-50 cursor-pointer gap-x-2 rounded-md py-2 px-5 font-semibold text-richblack-900 w-full justify-center active:scale-90'
+                                >
+                                    create group
+                                </button>
+                            )
+                            :(
+                                <button
+                                type='submit'
+                                disabled={loading}
+                                className='flex items-center bg-yellow-50 cursor-pointer gap-x-2 rounded-md py-2 px-5 font-semibold text-richblack-900 w-full justify-center active:scale-90'
+                                >
+                                    {
+                                        loading ? 'changing...' : "save changes"
+                                    }
+                                </button>
+                            )
+                        }
                     </div>
                 </form>
 

@@ -5,7 +5,7 @@ import { searchPeople } from "../services/Operations/userOperation";
 import { useSelector } from "react-redux";
 import Users from "../components/Core/Search people/Users";
 import toast from "react-hot-toast";
-function Search({setOpenSearchMenu}){
+function Search({setOpenSearchMenu,fullScreen=false}){
     const [searchKeyword,setSearchKeyword] = useState();
     const {token} = useSelector((state)=>state.auth);
     const[searchData,setSearchData] = useState([]);
@@ -25,10 +25,14 @@ function Search({setOpenSearchMenu}){
 
     // },[searchKeyword])
 
+    // console.log(searchKeyword)
+
     async function submitHandler(){
         setLoading(true);
         // console.log(searchKeyword)
-        if(searchKeyword === ""){
+        if(searchKeyword == "" || searchKeyword == undefined){
+            toast.error('enter the values to search')
+            setLoading(false)
             return;
         }
         const response = await searchPeople(searchKeyword,token);
@@ -36,22 +40,35 @@ function Search({setOpenSearchMenu}){
         
         if(response)
             setSearchData(response);
+        setSearchKeyword(null);
         setLoading(false);
+        console.log(response)
+    }
+
+    async function keyDownHandler(e){
+        if(e.key === 'Enter')
+            await submitHandler();
     }
 
     function changeHandler(e){
         const name = e.target.value;
         setSearchKeyword(name);
+        // console.log(name)
     }
     // console.log(searchData);
     return (
-        <div className="sm:w-[25%] fixed inset-0 z-[1000] !mt-0  overflow-auto bg-orange-200  backdrop-blur-sm">
+        <div className={`${!fullScreen ? "sm:w-[25%] fixed inset-0 z-[1000] !mt-0  overflow-auto bg-orange-200  backdrop-blur-sm" : ""}`}>
             <div className="flex flex-col gap-7 p-2">
                 <div className="mt-10 p-2 flex items-center justify-between text-2xl font-bold">
                     <h2 className="">Search User</h2>
-                    <RxCross2 className="text-3xl font-extrabold bg-pink-700 text-richblack-5 p-2 rounded-full cursor-pointer"
-                    onClick={()=>setOpenSearchMenu(false)}
-                    />
+                    
+                    {
+                        !fullScreen && (
+                            <RxCross2 className="text-3xl font-extrabold bg-pink-700 text-richblack-5 p-2 rounded-full cursor-pointer"
+                            onClick={()=>setOpenSearchMenu(false)}
+                            />
+                        )
+                    }
 
                 </div>
                 <div className="flex items-center justify-between">
@@ -60,14 +77,14 @@ function Search({setOpenSearchMenu}){
                     id="searchBar"
                     name="searchBar"
                     type="text"
+                    onKeyDown={(e)=>keyDownHandler(e)}
                     onChange={changeHandler}
                     placeholder="enter name/username/email"
-                    className="rounded-lg bg-richblack-25 p-3 py-2 text-[16px] leading-[24px] text-richblack-900 shadow-[0_1px_0_0] shadow-white/50 placeholder:text-richblack-800 focus:outline-none w-[300px]"
+                    className={`rounded-lg bg-richblack-25 p-3 py-2 text-[16px] leading-[24px] text-richblack-900 shadow-[0_1px_0_0] shadow-white/50 placeholder:text-richblack-800 focus:outline-none ${!fullScreen ? "w-[300px]" : "w-[90%]"}`}
                     />
                     
                     <div className={`${loading?"pointer-events-none":"cursor-pointer"} cursor-pointer bg-richblack-200 p-2 rounded-full`}
                     onClick={submitHandler}
-                    aria-disabled={loading}
                     >
                         <IoSearch 
                         className="text-3xl "

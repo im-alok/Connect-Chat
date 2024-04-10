@@ -3,12 +3,14 @@ import {useParams} from 'react-router-dom'
 import { IoSend } from "react-icons/io5";
 import { useState } from 'react';
 import { sendMessage } from '../../../services/Operations/userOperation';
-import { useDispatch, useSelector } from 'react-redux';
-import { setMessageDetails } from '../../../slices/conversationSlice';
+import {  useSelector } from 'react-redux';
+import { socketConnection } from '../../../Utils/SocketConnection';
 
-function SendMessage(){
+var socket = socketConnection();
+function SendMessage({conversation,setConversation}){
     const {chatId,groupStatus} = useParams();
-    console.log(groupStatus);
+    const{user} = useSelector((state)=>state.profile);
+    // console.log(groupStatus);
     const {
         register,
         setValue,
@@ -16,26 +18,78 @@ function SendMessage(){
     } = useForm();
     const [loading,setLoading] = useState(false);
     const{token} = useSelector((state)=>state.auth);
-    const dispatch = useDispatch();
+    const {socketConnected} = useSelector((state)=>state.conversation);
+    const [typing,setTyping] = useState(false);
     // console.log(chatId)
     // console.log(getValues().sendMessage)
 
-    function sendMessageHandler(){
+    async function sendMessageHandler(){
         setLoading(true);
-        if(getValues().sendMessage == ""){
+        socket.emit('stop typing',chatId);
+        setTyping(false);
+        if(getValues().sendMessage === ""){
             setLoading(false);
             return;
         }
             
-        if(groupStatus){
-            const response = sendMessage(chatId,getValues().sendMessage,token,null);
+        if(groupStatus === 'false'){
+            const response = await sendMessage(chatId,getValues().sendMessage,token,null);
+            
+            
+            const message = [...conversation]
+            setConversation(message);
+            socket.emit('new Message',response);
+            // console.log(message);
         }
         else{
-            const response = sendMessage(null,getValues().sendMessage,token,chatId);
+            const response = await sendMessage(null,getValues().sendMessage,token,chatId);
+            const message = [...conversation,response.deliverMessage]
+            setConversation(message);
+            socket.emit('new Message',response);
         }
         setValue('sendMessage',"");
         setLoading(false);
     }
+
+    async function keyDownHandler(e){
+        if(e.key === 'Enter'){
+            await sendMessageHandler();
+            // console.log('enter is pressed');
+        }
+            
+    }
+
+    var data = {
+        chatId:chatId,
+        user:user
+    }
+
+    function typingHandler(e) {
+        if (!socketConnected) return;
+        
+        var ty=false;
+
+        if (!typing) {
+            ty=true;
+            setTyping(true);
+            socket.emit("typing", data); // Emit typing event when user starts typing
+        }
+    
+
+        var lastTypingTimeRef = new Date().getTime(); // Set initial typing time
+    
+        const TimerLength = 10000;
+    
+        setTimeout(() => {
+            const timeNow = new Date().getTime();
+            if (timeNow - lastTypingTimeRef >= TimerLength && ty) {
+                socket.emit("stop typing", data); // Emit stop typing event after TimerLength
+                setTyping(false);
+            }
+        }, TimerLength);
+    
+    }
+    
 
     return(
         <div className='p-5'>
@@ -48,6 +102,8 @@ function SendMessage(){
                 placeholder='send message'
                 {...register('sendMessage')}
                 className='form-style w-[94%]'
+                onKeyDown={(e)=>keyDownHandler(e)}
+                onChange={(e)=>typingHandler(e)}
                 />
                 <div>
                     {

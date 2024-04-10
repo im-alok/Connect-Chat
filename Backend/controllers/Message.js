@@ -29,15 +29,23 @@ exports.sendMessage = async(req,res)=>{
     
             }
     
-            const deliverMessage = await Message.create(newMessage);
+            const deliverMessageDetails = await Message.create(newMessage);
+
+            const deliverMessage = await Message.findById(deliverMessageDetails._id).populate("senderId").exec();
     
             //updating the latestMessage
-            await Chat.findByIdAndUpdate(chatId,{latestMessage:deliverMessage._id});
+            const latestMessageDetails = await Chat.findByIdAndUpdate(chatId,{latestMessage:deliverMessage._id},{new:true}).populate("users").populate("latestMessage").exec();
+
+            const latestMessage ={
+                chat:latestMessageDetails,
+                deliverMessage
+            }
+            // console.log(latestMessage);
     
             return res.status(200).json({
                 success:true,
                 message:'Message delivered successfully',
-                deliverMessage
+                latestMessage
             })
         }
 
@@ -63,15 +71,22 @@ exports.sendMessage = async(req,res)=>{
     
             }
     
-            const deliverMessage = await Message.create(newMessage);
+            const deliverMessageDetails = await Message.create(newMessage);
+            const deliverMessage = await Message.findById(deliverMessageDetails._id).populate('senderId')
     
             //updating the latestMessage
-            await Group.findByIdAndUpdate(groupId,{latestMessage:deliverMessage._id});
+            const latestMessageDetails = await Group.findByIdAndUpdate(groupId,{latestMessage:deliverMessage._id}).populate("users").populate('latestMessage').exec();
     
+            const latestMessage ={
+                chat:latestMessageDetails,
+                deliverMessage
+            }
+            // console.log(latestMessage);
+
             return res.status(200).json({
                 success:true,
                 message:'Message delivered successfully',
-                deliverMessage
+                latestMessage
                 
             })
         }

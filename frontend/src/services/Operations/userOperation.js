@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { apiConnector } from "../apiConnector";
-import {Message, SearchUser} from "../apis";
+import {Message, SearchUser, search} from "../apis";
 import {toast} from 'react-hot-toast';
 
 
@@ -44,9 +44,53 @@ export async function sendMessage(chatId,message,token,groupId){
         if(!response.data.success)
             throw new Error(response.data.message);
         // console.log(response);
-        result = response.data.deliverMessage
+        result = response.data.latestMessage
+        console.log(result);
         return result;
     } catch (error) {
         console.log(error);
     }
 }
+
+
+export async function findFriendDetails(token,id){
+    let result ={};
+    try {
+        const response = await apiConnector('GET',search.findFriendsDetails,
+        null,
+        {
+            "Authorization" : 'Bearer' + token
+        },{
+            id:id
+        },
+        )
+        if(!response.data.success)
+            throw new Error(response?.data?.message);
+        result = response.data.result;
+        return result;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export async function getGroupDetails(token,id){
+    let result ={};
+    try {
+        const response = await apiConnector('GET',search.getGroupDetails,
+        null,
+        {
+            "Authorization" : 'Bearer' + token
+        },{
+            groupId:id
+        },
+        )
+        if(!response.data.success)
+            throw new Error(response?.data?.message);
+        // console.log(response)
+        result = response.data.groupDetails;
+        return result;
+    } catch (error) {
+        console.log(error);
+    }
+}
+

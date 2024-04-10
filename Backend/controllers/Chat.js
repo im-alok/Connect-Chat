@@ -98,8 +98,10 @@ exports.createChat = async(req,res)=>{
 }
 
 exports.fetchChats = async(req,res)=>{
+    // console.log('Hello')
     try {
         const userId = req.user.id;
+        // console.log(userId)
         const userChat = await Individual.find({users:{$elemMatch:{$eq:userId}}})
                                         .populate("users")
                                         .populate("latestMessage")
@@ -113,7 +115,8 @@ exports.fetchChats = async(req,res)=>{
             })
         }
 
-        const groupChat = await Group.find({members:{$elemMatch:{$eq:userId}}}).populate('members').populate('groupAdmin').populate("latestMessage").sort({updatedAt:-1}).exec();
+        const groupChat = await Group.find({users:{$elemMatch:{$eq:userId}}}).populate('users').populate('groupAdmin').populate("latestMessage").sort({updatedAt:-1}).exec();
+        // console.log(groupChat);
 
         return res.status(200).json({
             success:true,
@@ -133,28 +136,28 @@ exports.fetchChats = async(req,res)=>{
 exports.createGroupChat = async(req,res)=>{
     try {
         const userId = req.user.id;
-        const {groupName,members} = req.body;
-        if(!groupName || members.length === 0){
+        const {groupName,users} = req.body;
+        if(!groupName || users.length === 0){
             return res.status(404).json({
                 success:false,
                 message:"All fields are required"
             })
         }
 
-        //validation for members is required
+        //validation for users is required
 
-        var users = JSON.parse(members);
-        users.push(userId);
+        var members = JSON.parse(users);
+        members.push(userId);
 
         const groupChat = await Group.create({
             groupName:groupName,
-            members:users,
+            users:members,
             groupAdmin:userId,
             profilepic:`https://api.dicebear.com/5.x/initials/svg?seed=${groupName}`
         });
 
         const groupChatDetails = await Group.findById(groupChat._id)
-                                                .populate('members')
+                                                .populate('users')
                                                 .populate('groupAdmin')
                                                 .exec();
 
@@ -176,7 +179,7 @@ exports.createGroupChat = async(req,res)=>{
 // exports.getAllGroupChat = async(req,res)=>{
 //     try {
 //         const userId = req.user.id;
-//         const userFullGroupChat = await Group.find({members:{$elemMatch:{$eq:userId}}}).populate('members').populate('groupAdmin');
+//         const userFullGroupChat = await Group.find({users:{$elemMatch:{$eq:userId}}}).populate('users').populate('groupAdmin');
 
 //         return res.status(200).json({
 //             success:true,
@@ -238,8 +241,8 @@ exports.renameGroup = async (req,res)=>{
 
 exports.removeFromGroup=async (req,res)=>{
     try {
-        const {members,groupId} = req.body;
-        if(members.length == 0 || !groupId){
+        const {users,groupId} = req.body;
+        if(users.length == 0 || !groupId){
             return res.status(400).json({
                 success:false,
                 message:'no user to remove/no groupId found'
@@ -257,26 +260,26 @@ exports.removeFromGroup=async (req,res)=>{
         if(groupDetails.groupAdmin != req.user.id){
             return res.status(400).json({
                 success:false,
-                message:'Only Admin can add/remove members'
+                message:'Only Admin can add/remove users'
             })
         }
 
 
-        for(const member of members){
+        for(const member of users){
             console.log(member);
             const memberId = new mongoose.Types.ObjectId(member);
-            if(!groupDetails.members.includes(memberId)){
+            if(!groupDetails.users.includes(memberId)){
                 return res.status(404).json({
                     success:false,
                     message:'One/many user is not belong to this group'
                 })
             }
-            groupDetails.members.pull(memberId);
+            groupDetails.users.pull(memberId);
             // console.log(groupDetails);
         }
         await groupDetails.save();
 
-        const updatedGroupDetails = await Group.findById(groupDetails._id).populate('members').populate('groupAdmin').exec();
+        const updatedGroupDetails = await Group.findById(groupDetails._id).populate('users').populate('groupAdmin').exec();
 
         return res.status(200).json({
             success:true,
@@ -296,8 +299,8 @@ exports.removeFromGroup=async (req,res)=>{
 exports.addToGroup=async (req,res)=>{
     try {
 
-        const {members,groupId} = req.body;
-        if(members.length == 0 || !groupId){
+        const {users,groupId} = req.body;
+        if(users.length == 0 || !groupId){
             return res.status(400).json({
                 success:false,
                 message:'no user to remove/no groupId found'
@@ -315,23 +318,23 @@ exports.addToGroup=async (req,res)=>{
         if(groupDetails.groupAdmin != req.user.id){
             return res.status(400).json({
                 success:false,
-                message:'Only Admin can add/remove members'
+                message:'Only Admin can add/remove users'
             })
         }
 
-        for(const member of members){
+        for(const member of users){
             const memberId = new mongoose.Types.ObjectId(member);
-            if(groupDetails.members.includes(memberId)){
+            if(groupDetails.users.includes(memberId)){
                 return res.status(404).json({
                     success:false,
                     message:'One/many user(s) are already part of this group'
                 })
             }
-            groupDetails.members.push(memberId);
+            groupDetails.users.push(memberId);
         }
         await groupDetails.save();
 
-        const updatedGroupDetails = await Group.findById(groupDetails._id).populate('members').populate('groupAdmin').exec();
+        const updatedGroupDetails = await Group.findById(groupDetails._id).populate('users').populate('groupAdmin').exec();
 
         return res.status(200).json({
             success:true,
@@ -343,6 +346,103 @@ exports.addToGroup=async (req,res)=>{
         return res.status(200).json({
             success:false,
             message:'Something went wrong'
+        })
+    }
+}
+
+exports.editGroup = async (req,res)=>{
+    try {
+        // console.log(req.body);
+        const {groupName,users,groupId} = req.body;
+        if(!groupName || !users || !groupId){
+            return res.status(400).json({
+                success:false,
+                message:'all fields are required'
+            })
+        }
+
+        
+
+        //searching whether the groupDetails is pressrnt or no
+        const groupDetails = await Group.findById(groupId);
+        if(!groupDetails){
+            return res.status(400).json({
+                success:false,
+                message:'group id id Invalid'
+            })
+        }
+
+        //check is the user editing the group is admin or not
+        const userId = req.user.id;
+        // console.log(groupDetails.groupAdmin , userId)
+        if(groupDetails.groupAdmin != userId){
+            return res.status(400).json({
+                success:false,
+                message:'only group admin can change the group details'
+            })
+        }
+
+        var members = JSON.parse(users);
+        groupDetails.groupName = groupName;
+        groupDetails.users = members;
+
+        const updatedGroupDetails = await groupDetails.save();
+
+        const updatedDetails = await Group.findById(updatedGroupDetails._id);
+
+        return res.status(200).json({
+            success:true,
+            message:'groupDetails updated successfully',
+            updatedDetails
+        })
+        } catch (error) {
+            console.log(error)
+            return res.status(500).json({
+                success:false,
+                message:'something went wrong'
+            })
+    }
+}
+
+
+exports.getGroupDetails = async(req,res)=>{
+    // console.log(req.query);
+    try {
+        const {groupId} = req.query;
+        if(!groupId){
+            return res.status(400).json({
+                success:false,
+                message:"groupId is required"
+            })
+        }
+
+        //searching for that group
+        const groupDetails = await Group.findById(groupId)
+            .populate({
+                path:"users",
+                select:"-password",
+                populate:{
+                    path:'additionalDetails'
+                }
+            }).populate({
+                path:"groupAdmin",
+                select:'-password',
+                populate:{
+                    path:"additionalDetails"
+                }
+            })
+
+            return res.status(200).json({
+                success:true,
+                message:'groupDetails fetched Successfully',
+                groupDetails
+            })
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success:false,
+            messsage:'Something went wrong'
         })
     }
 }

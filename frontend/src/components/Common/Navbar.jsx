@@ -6,12 +6,16 @@ import { setToken } from "../../slices/authSlice";
 import { FaSearch } from "react-icons/fa";
 import { useState } from "react";
 import Search from "../../Pages/Search";
+import { FaBell } from "react-icons/fa";
 
 function Navbar(){
     const navigate = useNavigate();
     const {token} = useSelector((state)=>state.auth)
     const dispatch = useDispatch();
     const [openSearchMenu,setOpenSearchMenu] = useState(false);
+    const {notificationDetails} = useSelector((state)=>state.conversation);
+
+    console.log(notificationDetails);
 
     function LogOutHandler(){
         dispatch(setToken(null));
@@ -44,36 +48,44 @@ function Navbar(){
                 <div className="loaders"></div>
             </div>
 
-            <div className="flex gap-2 items-center">
+            <div className="flex flex-row gap-5 items-center">
                 {
-                    !token && (<ButtonIcon 
-                    text={'Login'}
-                    onclick={()=>navigate('/login')}
-                    type={'button'}
-                    />)
+                    token && (<div className="text-3xl relative"> 
+                                <FaBell /> 
+                                <div className="absolute -top-3 -right-3 text-sm bg-richblue-900  w-[30px] h-[30px] rounded-full flex justify-center items-center font-bold text-yellow-50">{notificationDetails.length}</div>
+                        </div>)
                 }
+                <div className="flex gap-2 items-center">
+                    {
+                        !token && (<ButtonIcon 
+                        text={'Login'}
+                        onclick={()=>navigate('/login')}
+                        type={'button'}
+                        />)
+                    }
 
-                {
-                    !token && (<ButtonIcon 
-                    text={'Sign up'}
-                    onclick={()=>navigate('/signup')}
-                    type={'button'}
-                    />)
-                }
-                {
-                    token && (<ButtonIcon 
-                    text={'Dashboard'}
-                    onclick={()=>navigate('/dashboard')}
-                    type={'button'}
-                    />)
-                }
-                {
-                    token && (<ButtonIcon 
-                    text={'Logout'}
-                    onclick={()=>LogOutHandler()}
-                    type={'button'}
-                    />)
-                }
+                    {
+                        !token && (<ButtonIcon 
+                        text={'Sign up'}
+                        onclick={()=>navigate('/signup')}
+                        type={'button'}
+                        />)
+                    }
+                    {
+                        token && (<ButtonIcon 
+                        text={'Dashboard'}
+                        onclick={()=>navigate('/dashboard')}
+                        type={'button'}
+                        />)
+                    }
+                    {
+                        token && (<ButtonIcon 
+                        text={'Logout'}
+                        onclick={()=>LogOutHandler()}
+                        type={'button'}
+                        />)
+                    }
+                </div>
             </div>
 
             {

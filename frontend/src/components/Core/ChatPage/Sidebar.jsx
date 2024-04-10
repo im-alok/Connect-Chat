@@ -4,17 +4,30 @@ import Chats from "./Chats";
 import { useSelector } from "react-redux";
 import { fetchAllChats } from "../../../services/Operations/chatOperation";
 import Groups from "./Groups";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
-function Sidebar(){
+function Sidebar({fullScreen=false}){
     const [menu,setMenu] = useState('Chats');
     const [chatData,setChatData] = useState([]);
     const [groupData,setGroupData] = useState([]);
     const{render,token} = useSelector((state)=>state.auth);
     const {user} = useSelector((state)=>state.profile);
     const navigate = useNavigate();
+    const [loading,setLoading] = useState(false);
+    const location = useLocation();
+
+    const {groupStatus} = useParams();
+    
+    useEffect(()=>{
+        if(groupStatus === 'true')
+            setMenu('Groups');
+        else
+            setMenu('Chats');
+    },[location])
+
     useEffect(()=>{
         async function fetchChats(){
+            setLoading(true);
             const response = await fetchAllChats(token);
             // console.log(response);
             if(response){
@@ -27,6 +40,7 @@ function Sidebar(){
                 // console.log(response.userChats);
                 setChatData(userChat);
                 setGroupData(response.groupChats);
+                setLoading(false);
             }
         }
         fetchChats();
@@ -40,7 +54,7 @@ function Sidebar(){
                     menuLinks.map((link)=>(
                         <div key={link.id}
                         onClick={()=>{setMenu(link.name)
-                        navigate('/');
+                        // navigate('/');
                         }}
                         className={`text-lg font-semibold ${menu === link.name ? " underline text-yellow-50" : "text-richblack-25"} cursor-pointer`}
                         >
@@ -51,7 +65,7 @@ function Sidebar(){
             </div>
 
             {
-                menu === 'Chats' ? (<Chats data={chatData}/>) : menu === 'Groups'?(<Groups data={groupData}/>):("")
+                menu === 'Chats' ? (<Chats data={chatData} loading={loading}/>) : menu === 'Groups'?(<Groups data={groupData} loading={loading}/>):("")
             }
         </div>
     )
