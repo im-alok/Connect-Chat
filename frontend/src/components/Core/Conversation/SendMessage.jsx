@@ -3,7 +3,7 @@ import {useParams} from 'react-router-dom'
 import { IoSend } from "react-icons/io5";
 import { useState } from 'react';
 import { sendMessage } from '../../../services/Operations/userOperation';
-import {  useSelector } from 'react-redux';
+import {  useDispatch, useSelector } from 'react-redux';
 import { socketConnection } from '../../../Utils/SocketConnection';
 
 var socket = socketConnection();
@@ -20,41 +20,91 @@ function SendMessage({conversation,setConversation}){
     const{token} = useSelector((state)=>state.auth);
     const {socketConnected} = useSelector((state)=>state.conversation);
     const [typing,setTyping] = useState(false);
+    const dispatch = useDispatch();
     // console.log(chatId)
     // console.log(getValues().sendMessage)
 
-    async function sendMessageHandler(){
+    // async function sendMessageHandler(){
+    //     setLoading(true);
+    //     socket.emit('stop typing',chatId);
+    //     setTyping(false);
+    //     if(getValues().sendMessage === ""){
+    //         setLoading(false);
+    //         return;
+    //     }
+            
+    //     if(groupStatus === 'false'){
+    //         const response = await sendMessage(chatId,getValues().sendMessage,token,null);
+            
+            
+    //         const message = [...conversation]
+    //         setConversation(message);
+    //         socket.emit('new Message',response);
+    //         // console.log(message);
+    //     }
+    //     else{
+    //         const response = await sendMessage(null,getValues().sendMessage,token,chatId);
+    //         const message = [...conversation]
+    //         setConversation(message);
+    //         socket.emit('new Message',response);
+    //     }
+    //     setValue('sendMessage',"");
+    //     setLoading(false);
+    // }
+
+    async function sendMessageHandler() {
         setLoading(true);
-        socket.emit('stop typing',chatId);
+        socket.emit('stop typing', chatId);
         setTyping(false);
-        if(getValues().sendMessage === ""){
+        if (getValues().sendMessage === "") {
             setLoading(false);
             return;
         }
-            
-        if(groupStatus === 'false'){
-            const response = await sendMessage(chatId,getValues().sendMessage,token,null);
-            
-            
-            const message = [...conversation]
-            setConversation(message);
-            socket.emit('new Message',response);
-            // console.log(message);
+    
+        let response;
+        if (groupStatus === 'false') {
+            response = await sendMessage(chatId, getValues().sendMessage, token, null);
+        } else {
+            response = await sendMessage(null, getValues().sendMessage, token, chatId);
         }
-        else{
-            const response = await sendMessage(null,getValues().sendMessage,token,chatId);
-            const message = [...conversation,response.deliverMessage]
-            setConversation(message);
-            socket.emit('new Message',response);
-        }
-        setValue('sendMessage',"");
+    
+        const message = [...conversation];
+        setConversation(message);
+        socket.emit('new Message', response);
+    
+        setValue('sendMessage', "");
         setLoading(false);
     }
+    
 
     async function keyDownHandler(e){
+        // console.log(e.key)
         if(e.key === 'Enter'){
-            await sendMessageHandler();
-            // console.log('enter is pressed');
+            setLoading(true);
+            socket.emit('stop typing',chatId);
+            setTyping(false);
+            if(getValues().sendMessage === ""){
+                setLoading(false);
+                return;
+            }
+                
+            if(groupStatus === 'false'){
+                const response = await sendMessage(chatId,getValues().sendMessage,token,null);
+                
+                
+                const message = [...conversation]
+                setConversation(message);
+                socket.emit('new Message',response);
+                // console.log(message);
+            }
+            else{
+                const response = await sendMessage(null,getValues().sendMessage,token,chatId);
+                const message = [...conversation]
+                setConversation(message);
+                socket.emit('new Message',response);
+            }
+            setValue('sendMessage',"");
+            setLoading(false);
         }
             
     }

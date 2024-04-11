@@ -15,7 +15,7 @@ function Navbar(){
     const [openSearchMenu,setOpenSearchMenu] = useState(false);
     const {notificationDetails} = useSelector((state)=>state.conversation);
 
-    console.log(notificationDetails);
+    // console.log(notificationDetails);
 
     function LogOutHandler(){
         dispatch(setToken(null));
@@ -49,12 +49,14 @@ function Navbar(){
             </div>
 
             <div className="flex flex-row gap-5 items-center">
-                {
-                    token && (<div className="text-3xl relative"> 
+                {/* {
+                    token && (<div className="text-3xl relative"
+                    onClick={()=>navigate('/notifications')}
+                    > 
                                 <FaBell /> 
                                 <div className="absolute -top-3 -right-3 text-sm bg-richblue-900  w-[30px] h-[30px] rounded-full flex justify-center items-center font-bold text-yellow-50">{notificationDetails.length}</div>
                         </div>)
-                }
+                } */}
                 <div className="flex gap-2 items-center">
                     {
                         !token && (<ButtonIcon 

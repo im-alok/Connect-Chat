@@ -54,3 +54,60 @@ export async function updatePassword(token,oldPassword,newPassword){
         toast.error(error.response.data.message);
     }
 }
+
+export function updateDisplayPicture(token,formData){
+    return async(dispatch) =>{
+        // console.log('hello')
+        try {
+            var toastId = toast.loading('Uploading');
+            const response = await apiConnector('PUT',UpdateProfile.imageUpload,
+            formData,
+            {
+                "Content-Type": "multipart/form-data",
+                Authorization: "Bearer" +  token,
+            }
+            );
+
+            if(! response.data.success){
+                throw new Error( response.data.message);
+            }
+            localStorage.removeItem('user');
+            localStorage.setItem('user',JSON.stringify(response.data.userDetails));
+            // console.log(response.data);
+            toast.dismiss(toastId);
+            toast.success(response.data.message);
+            
+        } catch (error) {
+            toast.error(error.response.data.message)
+            toast.dismiss(toastId);
+        }
+        
+    }
+}
+
+
+export function updateGroupDisplayPicture(token,formData){
+    return async(dispatch) =>{
+        // console.log(formData)
+        // for(const entries of formData)
+        //     console.log(entries)
+        var toastId = toast.loading('Uploading');
+        try {
+            const response = await apiConnector('PUT',UpdateProfile.groupImageUpload,formData,
+            {
+                "Content-Type": "multipart/form-data",
+                Authorization: "Bearer" +  token,
+            }
+            );
+
+            if(! response.data.success){
+                throw new Error( response.data.message);
+            }
+            toast.success(response.data.message);
+            
+        } catch (error) {
+            toast.error(error.response.data.message)
+        }
+        toast.dismiss(toastId);
+    }
+}

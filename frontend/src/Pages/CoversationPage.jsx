@@ -10,6 +10,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { setRender } from "../slices/authSlice";
 import { findFriendDetails, getGroupDetails } from "../services/Operations/userOperation";
 
+var count =0;
 var socket = socketConnection();
 var selectedChatCompare;
 function ConversationPage(){
@@ -49,28 +50,34 @@ function ConversationPage(){
 
 
     //receiving the message
-    useEffect(()=>{
-        socket.on("message received",(newMessageReceived)=>{
-            if(!selectedChatCompare || selectedChatCompare !== newMessageReceived.chat._id){
-                //give notification
-                if(!notificationDetails.includes(newMessageReceived.deliverMessage)){
-                    let notification =newMessageReceived
+    useEffect(() => {
+        const messageReceivedHandler = (newMessageReceived) => {
+            // console.log("entry done")
+            if (!selectedChatCompare || selectedChatCompare !== newMessageReceived.chat._id) {
+                if(!notificationDetails.some((n)=>n.deliverMessage._id === newMessageReceived.deliverMessage._id)){
+                    let notification = newMessageReceived;
                     dispatch(setNotificationDetails(notification));
-                    dispatch(setRender());
-                    // console.log(notification);
-
+                    console.log(newMessageReceived,count++);
+                        // dispatch(setRender());
+                        // console.log(notification)
                 }
-                console.log("hii");
-                console.log(newMessageReceived.deliverMessage);
-
+                    
+            } else {
+                console.log('hello');
+                if(!conversation?.some((convo)=>convo._id === newMessageReceived.deliverMessage._id)){
+                    const message = [...conversation,newMessageReceived.deliverMessage];
+                    setConversation(message);
+                }
             }
-            else{
-                const message = [...conversation]
-                setConversation(message);
-                // console.log(message);
-            }
-        })
-    })
+        };
+    
+        socket.on("message received", messageReceivedHandler);
+    
+        return () => {
+            socket.off("message received", messageReceivedHandler);
+        };
+    }, [selectedChatCompare, notificationDetails, conversation]);
+    
 
 
     const [Data,setData] = useState({});

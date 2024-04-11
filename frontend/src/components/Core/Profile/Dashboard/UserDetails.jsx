@@ -1,5 +1,4 @@
 import { FaSearch } from "react-icons/fa";
-import { FaBell } from "react-icons/fa6"
 import ImageUploader from "./ImageUploader";
 import { useSelector } from "react-redux";
 import PersonalDetails from "./PersonalDetails";

@@ -52,7 +52,7 @@ function AllMessage({conversation,setConversation,isTyping}){
     
                 if(!response.data.success)
                     throw new Error(response.data.message);
-                console.log(response.data.messageDetails);
+                // console.log(response.data.messageDetails);
                 setConversation(response.data.messageDetails)
             } catch (error) {
                 console.log(error)

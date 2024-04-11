@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getGroupDetails } from "../../../../services/Operations/userOperation";
 import { useEffect, useState } from "react";
 import ProfileSidebar from "../ProfileSidebar";
-import { FaBell } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
 import { dateFormatter } from "../../../../Utils/dateAndTimeFormatter";
 import { BiSolidMessageAdd } from "react-icons/bi";
@@ -23,6 +22,7 @@ function GroupDetails(){
     const dispatch = useDispatch();
 
     const {user} = useSelector((state)=>state.profile);
+    const userDetails = user;
     const navigate = useNavigate();
     useEffect(()=>{
         async function GroupDetail(){
@@ -39,7 +39,7 @@ function GroupDetails(){
     async function messageHandler(id){
         const response = await createChat(id,token,dispatch);
         if(response){
-            navigate(`/chat/${response._id}/group/false`);
+            navigate(`/chat/${response._id}/group/false/user/${null}`);
         }
     }
 
@@ -57,9 +57,9 @@ function GroupDetails(){
 
                             <div className="flex flex-row gap-7 items-center">
 
-                                <FaBell 
+                                {/* <FaBell 
                                 className="cursor-pointer"
-                                />
+                                /> */}
                                 <FaSearch
                                 className="cursor-pointer"
                                 onClick={()=>navigate('/dashboard/search')}/>
@@ -85,7 +85,7 @@ function GroupDetails(){
                                     <p className="text-sm text-richblack-300">Created by : {groupDetails?.groupAdmin?.name} on {dateFormatter(groupDetails.createdAt)}</p>
                                     
                                     <div className="text-sm font-semibold cursor-pointer bg-yellow-50 rounded-full hover:bg-pink-300 w-fit px-3 py-2"
-                                    onClick={()=>{navigate(`/chat/${groupDetails._id}/group/true`)}}>
+                                    onClick={()=>{navigate(`/chat/${groupDetails._id}/group/true/user/null`)}}>
                                         <div className="flex gap-2 items-center text-richblack-900">
                                             <BiSolidMessageAdd />
                                             <p>Message</p> 
@@ -122,21 +122,33 @@ function GroupDetails(){
                             <h2 className="text-richblack-400 text-xl">{groupDetails?.users?.length} members</h2>
                             {
                                 groupDetails?.users?.map((user)=>(
-                                    <div className="bg-orange-200 p-5 rounded-xl flex justify-between items-center hover:bg-yellow-25">
+                                    <div className="bg-orange-200 p-5 rounded-xl flex justify-between items-center hover:bg-yellow-25 cursor-pointer"
+                                    onClick={()=>navigate(`/friends/${user._id}`)}
+                                    >
                                         <div className="flex flex-row gap-3 items-center">
                                             <img 
                                             src={user?.profilepic}
                                             className="w-[70px] h-[70px] rounded-full "
                                             />
                                             <div className="font-bold">
-                                                <p className="text-black-900">{user?.name} / {user?.username}</p>
+                                                <p className={`text-black-900`}>
+                                                    {
+                                                        user._id === userDetails._id ?
+                                                        (<div>You / {user?.username}</div>)
+                                                        :(<div>{user?.name} / {user?.username}</div>)
+                                                    }
+                                                </p>
                                                 <p className="text-black-900">{user?.email}</p>
                                             </div>
                                         </div>
-                                        <div className="text-2xl font-semibold cursor-pointer bg-yellow-50 p-5 rounded-full hover:bg-pink-300"
-                                        onClick={()=>{messageHandler(user?._id)}}>
-                                            <BiSolidMessageAdd />
-                                        </div>
+                                        {
+                                            user._id !=userDetails._id && (
+                                                <div className="text-2xl font-semibold cursor-pointer bg-yellow-50 p-5 rounded-full hover:bg-pink-300"
+                                                onClick={()=>{messageHandler(user?._id)}}>
+                                                    <BiSolidMessageAdd />
+                                                </div>
+                                            )
+                                        }
                                     </div>
                                 ))
                             }

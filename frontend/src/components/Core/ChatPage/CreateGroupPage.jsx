@@ -10,6 +10,7 @@ import ButtonIcon from '../../Common/ButtonIcon';
 import { createGroup, editGroup } from '../../../services/Operations/chatOperation';
 import toast from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
+import ImageUploader from '../Profile/Dashboard/ImageUploader';
 
 function CreateGroupPage({groupData , isEdit=false}){
     const [loading,setLoading] = useState(false);
@@ -123,7 +124,7 @@ function CreateGroupPage({groupData , isEdit=false}){
             <div className='bg-richblack-900 max-w-[600px] min-w-[600px] min-h-[650px] rounded-md flex flex-col gap-2 p-7 border border-yellow-50 shadow-[0px_0px_15px_5px] shadow-richblue-100'>
                 
                 <div className='flex items-center justify-between'>
-                    <h1 className=''>Create Group</h1>
+                    <h1 className=''>{!isEdit ? ("Create Group") : ('edit group')}</h1>
                     <div className=' p-2 bg-orange-200 rounded-full font-bold cursor-pointer'
                     onClick={()=>dispatch(setShowCreateGroupField(false))}
                     >
@@ -133,6 +134,11 @@ function CreateGroupPage({groupData , isEdit=false}){
                     </div>
                 </div>
 
+                <div className='w-full flex justify-center'>
+                    {
+                        isEdit && (<ImageUploader isGroup={true}/>)
+                    }
+                </div>
                 <form
                 className='flex flex-col gap-5'
                 onSubmit={!isEdit ? (handleSubmit(submitHandler)) : (handleSubmit(editHandler))}

@@ -36,5 +36,6 @@ export const search = {
 export const UpdateProfile = {
     updateDetails : BASE_URL + '/profile/updateprofiledetails',
     updatePassword: BASE_URL + '/profile/updatePassword',
-    imageUpload: BASE_URL + '/profile/imageupload'
+    imageUpload: BASE_URL + '/profile/imageupload',
+    groupImageUpload : BASE_URL + '/profile/groupimageupdate'
 }

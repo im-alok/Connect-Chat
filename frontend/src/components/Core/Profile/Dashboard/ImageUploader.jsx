@@ -1,15 +1,33 @@
-import { useState } from "react";
-import { useSelector } from "react-redux"
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux"
 import { BsFillPencilFill } from "react-icons/bs"
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
+import { updateDisplayPicture, updateGroupDisplayPicture } from "../../../../services/Operations/profileOperation";
+import { getGroupDetails } from "../../../../services/Operations/userOperation";
+import { useParams } from "react-router-dom";
 
-function ImageUploader(){
+function ImageUploader({isGroup = false}){
     const {user} = useSelector((state)=>state.profile);
     const [imageFile, setImageFile] = useState(null)
     const [previewSource, setPreviewSource] = useState(null);
-
+    const {token} = useSelector((state)=>state.auth);
+    const dispatch = useDispatch();
+    const [groupDetails,setGroupDetails] = useState();
+    const {groupId} = useParams();
     const [loading,setLoading] = useState(false);
+
+    useEffect(()=>{
+        async function getGroupData(){
+            const response = await getGroupDetails(token,groupId);
+            setGroupDetails(response)
+            console.log(response)
+        }
+        if(isGroup){
+            getGroupData();
+        }
+        // console.log(groupDetails)
+    },[])
 
     const handleFileChange = (e) => {
         const file = e.target.files[0]
@@ -51,11 +69,36 @@ function ImageUploader(){
         }
     }
 
+    const handleGroupFileUpload = (e) => {
+        e.preventDefault();
+        try {
+        setLoading(true)
+        let formData = new FormData();
+        formData.append("imageFile", imageFile);
+        formData.append('groupId',groupId);
+
+        // for(var pair of formData.entries()) {
+        //     console.log(pair);
+
+        // }
+        dispatch(updateGroupDisplayPicture(token, formData)).then(() => {
+            
+            setLoading(false);
+        })
+        } catch (error) {
+            setLoading(false);
+            console.log("ERROR MESSAGE - ", error.message);
+        
+        }
+    }
+
+
+
     return (
         <div className="relative">
             <div className="relative">
                 <img 
-                src={previewSource || user.profilepic}
+                src={previewSource || groupDetails?.profilepic || user.profilepic}
                 className="w-[150px] h-[150px] object-cover rounded-full border border-caribbeangreen-300"
                 />
                 {
@@ -90,7 +133,9 @@ function ImageUploader(){
                     className={`absolute p-1 px-3 rounded-xl font-semibold ${loading ? "top-[33%] left-9" : "top-[34%] left-9"} cursor-pointer`}
                     >
                         {
-                            loading ? (<div className="loader"></div>) : (<div className=" text-4xl bg-[#24d42a] p-2 rounded-full cursor-pointer text-richblack-900 border border-richblack-900"><FaCloudUploadAlt /></div>)
+                            loading ? (<div className="loader"></div>) : (<div className=" text-4xl bg-[#24d42a] p-2 rounded-full cursor-pointer text-richblack-900 border border-richblack-900"
+                            onClick={!isGroup ? ((e)=>handleFileUpload(e)) : ((e)=>handleGroupFileUpload(e))}
+                            ><FaCloudUploadAlt /></div>)
                         }
                     </button>
                 )

@@ -11,6 +11,7 @@ import { MdOutlinePerson } from "react-icons/md";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { BiSolidMessageAdd } from "react-icons/bi";
 import { createChat } from "../../../../services/Operations/chatOperation";
+import { dateFormatter } from "../../../../Utils/dateAndTimeFormatter";
 
 function FriendDetails(){
 
@@ -49,7 +50,7 @@ function FriendDetails(){
     async function messageHandler(id){
         const response = await createChat(id,token,dispatch);
         if(response){
-            navigate(`/chat/${response._id}/group/false`);
+            navigate(`/chat/${response._id}/group/false/user/${id}`);
         }
     }
 
@@ -62,9 +63,9 @@ function FriendDetails(){
 
                         <div className="flex flex-row gap-7 items-center">
 
-                            <FaBell 
+                            {/* <FaBell 
                             className="cursor-pointer"
-                            />
+                            /> */}
                             <FaSearch
                             className="cursor-pointer"
                             onClick={()=>navigate('/dashboard/search')}
@@ -105,12 +106,12 @@ function FriendDetails(){
                             <div className="w-full h-[50px] bg-black-600 flex items-center justify-between p-5">
                                 <div className="flex gap-2 text-white items-center">
                                     <MdDateRange />
-                                    <p>{details?.additionalDetails?.dob || "N/A"} </p>
+                                    <p>{dateFormatter(details?.additionalDetails?.dob )|| "N/A"} </p>
                                 </div>
 
                                 <div className="flex gap-2 text-white items-center">
                                     <div className={`w-[10px] h-[10px] rounded-full ${details.status == 'active' ? "bg-[#0ffc03]" :"bg-[#cc0a24]"}`}>{details?.status}</div>
-                                    <p>{details?.additionalDetails?.dob || "N/A"} </p>
+                                    <p>{details?.additionalDetails?.status || "N/A"} </p>
                                 </div>
 
                                 <div className="flex gap-2 text-white items-center">
@@ -136,15 +137,26 @@ function FriendDetails(){
                                             className="w-[70px] h-[70px] rounded-full "
                                             />
                                             <div className="font-bold">
-                                                <p className="text-black-900">{chat.users[0].name} / {chat.users[0].username}</p>
+                                                <p className="text-black-900">
+                                                    {
+                                                        user._id === chat.users[0]._id ? ('You'):(<div>
+                                                            {chat.users[0].name} / {chat.users[0].username}
+                                                        </div>)
+                                                    }
+                                                </p>
                                                 <p className="text-black-900">{chat.users[0].email}</p>
                                             </div>
                                         </div>
-                                        <div className="text-2xl font-semibold cursor-pointer bg-yellow-50 p-5 rounded-full hover:bg-pink-300"
-                                        onClick={()=>{messageHandler(chat.users[0]._id)}}
-                                        >
-                                            <BiSolidMessageAdd />
-                                        </div>
+                                        {
+                                            user._id != chat.users[0]._id
+                                            && (
+                                                <div className="text-2xl font-semibold cursor-pointer bg-yellow-50 p-5 rounded-full hover:bg-pink-300"
+                                                onClick={()=>{messageHandler(chat.users[0]._id)}}
+                                                >
+                                                    <BiSolidMessageAdd />
+                                                </div>
+                                            )
+                                        }
                                     </div>
                                 ))
                             }

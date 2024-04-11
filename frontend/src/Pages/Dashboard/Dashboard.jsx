@@ -1,4 +1,3 @@
-import { FaBell } from "react-icons/fa6";
 import ProfileSidebar from "../../components/Core/Profile/ProfileSidebar";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
@@ -26,9 +25,9 @@ function Dashboard(){
 
                         <div className="flex flex-row gap-7 items-center">
 
-                            <FaBell 
+                            {/* <FaBell 
                             className="cursor-pointer"
-                            />
+                            /> */}
                             <FaSearch
                             className="cursor-pointer"
                             onClick={()=>navigate('/dashboard/search')}

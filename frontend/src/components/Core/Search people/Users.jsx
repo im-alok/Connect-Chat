@@ -17,7 +17,7 @@ function Users({searchData,setOpenSearchMenu}){
         // console.log(response);
         if(response){
             setOpenSearchMenu(false);
-            navigate(`/chat/${response._id}/group/${false}`);
+            navigate(`/chat/${response._id}/group/${false}/user/${null}`);
         }
             
     }
