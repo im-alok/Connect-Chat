@@ -7,6 +7,8 @@ import { FaSearch } from "react-icons/fa";
 import { useState } from "react";
 import Search from "../../Pages/Search";
 import { FaBell } from "react-icons/fa";
+import { apiConnector } from "../../services/apiConnector";
+import { Auth } from "../../services/apis";
 
 function Navbar(){
     const navigate = useNavigate();
@@ -17,16 +19,23 @@ function Navbar(){
 
     // console.log(notificationDetails);
 
-    function LogOutHandler(){
-        dispatch(setToken(null));
-        localStorage.removeItem('user');
-        localStorage.removeItem('token');
-        toast.success('logout Successfully');
-        navigate('/login');
+    async function LogOutHandler(){
+
+        const response = await apiConnector('PUT',Auth.logout,null,{"Authorization" : "Bearer" + token} , null);
+
+        if(response.data.success){
+            dispatch(setToken(null));
+            localStorage.removeItem('user');
+            localStorage.removeItem('token');
+            toast.success(response.data.message);
+            navigate('/login');
+        }
+
+        
     }
 
     return(
-        <div className="flex justify-between w-screen min-h-[4.9rem] bg-orange-200 sm:px-10 px-2 border-b-2 border-richblack-900 items-center">
+        <div className="flex justify-between w-screen min-h-[4.2rem] sm:min-h-[4.9rem] bg-orange-200 sm:px-10 px-2 border-b-2 border-richblack-900 items-center">
 
             <div>
                 {
@@ -34,7 +43,7 @@ function Navbar(){
                         <div className="flex gap-2 items-center font-extrabold cursor-pointer bg-richblack-25 p-2 rounded-full px-5 hover:bg-richblack-500"
                         onClick={()=>setOpenSearchMenu(true)}
                         >
-                            <p>Find Friends</p>
+                            <p className="hidden sm:block">Find Friends</p>
                             <FaSearch />
                         </div>
                     )
@@ -42,10 +51,9 @@ function Navbar(){
             </div>
 
 
-            <div className="flex flex-row gap-2 items-center">
+            <div className="hidden sm:flex flex-row gap-2 items-center">
                 <p className="hidden sm:flex sm:text-6xl">&#169;</p>
                 <div className="font-bold text-xl sm:text-3xl text-richblack-900">Connect Chat</div>
-                <div className="loaders"></div>
             </div>
 
             <div className="flex flex-row gap-5 items-center">

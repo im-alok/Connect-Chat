@@ -121,10 +121,10 @@ function CreateGroupPage({groupData , isEdit=false}){
 
     return(
         <div className="fixed inset-0 z-[1000] !mt-0 grid place-items-center overflow-auto bg-richblack-900 bg-opacity-50 backdrop-blur-sm">
-            <div className='bg-richblack-900 max-w-[600px] min-w-[600px] min-h-[650px] rounded-md flex flex-col gap-2 p-7 border border-yellow-50 shadow-[0px_0px_15px_5px] shadow-richblue-100'>
+            <div className='bg-richblack-900 sm:max-w-[600px] w-full sm:min-w-[600px] min-h-[650px] rounded-md flex flex-col gap-2 p-7 border border-yellow-50 shadow-[0px_0px_15px_5px] shadow-richblue-100'>
                 
                 <div className='flex items-center justify-between'>
-                    <h1 className=''>{!isEdit ? ("Create Group") : ('edit group')}</h1>
+                    <h1 className='sm:text-5xl text-2xl'>{!isEdit ? ("Create Group") : ('edit group')}</h1>
                     <div className=' p-2 bg-orange-200 rounded-full font-bold cursor-pointer'
                     onClick={()=>dispatch(setShowCreateGroupField(false))}
                     >

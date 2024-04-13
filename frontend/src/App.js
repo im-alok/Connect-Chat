@@ -21,6 +21,8 @@ import Friends from "./components/Core/Profile/Friends";
 import DashboardGroups from "./components/Core/Profile/Groups";
 import FriendDetails from "./components/Core/Profile/Friends/FriendDetails";
 import GroupDetails from "./components/Core/Profile/Group/GroupDetails";
+import ForgotPassword from "./Pages/ForgetPassword";
+import ResetPasswordPage from "./Pages/ResetPasswordPage";
 
 
 
@@ -77,6 +79,8 @@ function App() {
 
             <Route path="/friends/:friendId" element={<FriendDetails />} />
             <Route path="/groups/:groupId" element={<GroupDetails />} />
+            <Route path="/send-reset-password-token" element={<ForgotPassword />} />
+            <Route path="/reset-your-password/:token" element={<ResetPasswordPage />} />
 
             <Route path="/thankyou" element={<ThankYouPage />} />
             <Route path="*" element={<Error />} />

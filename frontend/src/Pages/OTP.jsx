@@ -21,7 +21,7 @@ function OTP(){
     }
 
     return(
-        <div className='relative flex items-center justify-center h-[calc(100vh-4.9rem)]'>
+        <div className='relative flex items-center justify-center h-[calc(100vh-0.1rem)]'>
             
             {/* Background Image */}
 
@@ -29,7 +29,7 @@ function OTP(){
                 <img 
                 src={image}
                 alt=''
-                className='h-[calc(100vh-4.9rem)] w-full object-cover opacity-100'
+                className='h-[calc(100vh-0.1rem)] w-full object-cover opacity-100'
                 />
 
                 <div className='absolute z-[500] top-0 w-full h-full bg-richblack-900 opacity-95'></div>

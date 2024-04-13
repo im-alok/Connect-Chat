@@ -42,7 +42,7 @@ function Search({setOpenSearchMenu,fullScreen=false}){
             setSearchData(response);
         setSearchKeyword(null);
         setLoading(false);
-        console.log(response)
+        // console.log(response)
     }
 
     async function keyDownHandler(e){
@@ -57,10 +57,10 @@ function Search({setOpenSearchMenu,fullScreen=false}){
     }
     // console.log(searchData);
     return (
-        <div className={`${!fullScreen ? "sm:w-[25%] fixed inset-0 z-[1000] !mt-0  overflow-auto bg-orange-200  backdrop-blur-sm" : ""}`}>
-            <div className="flex flex-col gap-7 p-2">
-                <div className="mt-10 p-2 flex items-center justify-between text-2xl font-bold">
-                    <h2 className="">Search User</h2>
+        <div className={`${!fullScreen ? "sm:w-[25%] fixed inset-0 z-[1000] !mt-0  overflow-auto bg-orange-200  backdrop-blur-sm" : "sm:mt-0 mt-5"}`}>
+            <div className="flex flex-col gap-5 sm:gap-7 p-2">
+                <div className={`${!fullScreen ? 'mt-12 sm:mt-10 ' :'mt-0'} p-2 flex items-center justify-between text-2xl font-bold`}>
+                    <h2 className="text-richblack-25 font-medium">Search Users:</h2>
                     
                     {
                         !fullScreen && (
@@ -71,7 +71,7 @@ function Search({setOpenSearchMenu,fullScreen=false}){
                     }
 
                 </div>
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between gap-3 sm:gap-0">
                     <input
                     disabled={loading} 
                     id="searchBar"
@@ -80,7 +80,7 @@ function Search({setOpenSearchMenu,fullScreen=false}){
                     onKeyDown={(e)=>keyDownHandler(e)}
                     onChange={changeHandler}
                     placeholder="enter name/username/email"
-                    className={`rounded-lg bg-richblack-25 p-3 py-2 text-[16px] leading-[24px] text-richblack-900 shadow-[0_1px_0_0] shadow-white/50 placeholder:text-richblack-800 focus:outline-none ${!fullScreen ? "w-[300px]" : "w-[90%]"}`}
+                    className={`rounded-lg bg-richblack-25 p-3 py-2 text-[16px] leading-[24px] text-richblack-900 shadow-[0_1px_0_0] shadow-white/50 placeholder:text-richblack-800 focus:outline-none ${!fullScreen ? "w-[300px]" : "w-[300px] sm:w-[90%]"}`}
                     />
                     
                     <div className={`${loading?"pointer-events-none":"cursor-pointer"} cursor-pointer bg-richblack-200 p-2 rounded-full`}

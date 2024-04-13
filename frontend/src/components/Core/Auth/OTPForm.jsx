@@ -10,7 +10,7 @@ function OTPForm({length = 4}){
     const dispatch = useDispatch();
 
     const {signUpFormData} = useSelector((state)=>state.auth);
-
+    const {loading} = useSelector((state)=>state.auth);
     const inputRefs = useRef([]);
 
     // console.log(inputRefs.current);
@@ -82,6 +82,7 @@ function OTPForm({length = 4}){
                             onClick={()=>clickHandler(index)}
                             onKeyDown={(e)=>keyHandler(e,index)}
                             className="w-16 h-16 m-1 text-center bg-richblack-800 border-2 border-richblack-300 outline-none text-2xl font-semibold rounded-full text-richblack-5"
+                            disabled={loading}
                             />
                         ))
                     }

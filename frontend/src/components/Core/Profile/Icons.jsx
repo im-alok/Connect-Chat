@@ -15,7 +15,7 @@ function Icons({iconData}){
 
     return(
         <div
-        className='relative group cursor-pointer text-white text-2xl font-semibold'
+        className='relative group cursor-pointer text-white text-2xl font-semibold flex flex-col items-center'
         onClick={()=>navigate(iconData.link)}
         >
             <div className={`hover:text-orange-200 ${activeIcon === iconData.name.toLowerCase() ? "text-orange-200":""}`}
@@ -23,7 +23,7 @@ function Icons({iconData}){
             >
                 <Icon />
             </div>
-            <p className='bg-gradient-to-r from-[#0052D4] via-[#65C7F7] to-[#9CECFB] text-transparent bg-clip-text text-xs font-bold absolute top-1 left-10 hidden group-hover:flex'>{iconData.name}</p>
+            <p className='bg-gradient-to-r from-[#0052D4] via-[#65C7F7] to-[#9CECFB] text-transparent bg-clip-text text-xs sm:font-bold sm:absolute sm:top-1 sm:left-10 hidden group-hover:flex'>{iconData.name}</p>
         </div>
     )
 }

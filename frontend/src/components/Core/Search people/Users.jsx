@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createChat } from "../../../services/Operations/chatOperation";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { setShowChat } from "../../../slices/conversationSlice";
 
 function Users({searchData,setOpenSearchMenu}){
     // console.log(searchData)
@@ -27,7 +28,10 @@ function Users({searchData,setOpenSearchMenu}){
                 searchData?.map((user,index)=>(
                     <div key={index}
                     className=""
-                    onClick={()=>clickHandler(user._id)}
+                    onClick={()=>{
+                        navigate(`/friends/${user._id}`)
+                        setShowChat(false);
+                    }}
                     >
                         <div className="flex gap-2 items-center bg-richblack-25 p-2 rounded-md py-3 hover:bg-yellow-100 cursor-pointer">
                             <img 
@@ -37,9 +41,9 @@ function Users({searchData,setOpenSearchMenu}){
 
                             <div className="font-medium">
                                 <div className="flex gap-1">
-                                    <p className="font-bold">{user.name.split(" ").slice(0,8).join(" ")}</p>
+                                    <p className="font-bold">{user.name.length > 23 ? (user.name.slice(0,24)+' ...'):(user.name)}</p>
                                 </div>
-                                <p className="text-sm ">{user.email}</p>
+                                <p className="text-sm ">{user.email.length > 23 ? (user.email.slice(0,24)+' ...'):(user.email)}</p>
                             </div>
                         </div>
                     </div>

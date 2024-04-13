@@ -66,7 +66,7 @@ function AllMessage({conversation,setConversation,isTyping}){
     },[chatId]);
 
     return(
-        <div className="w-[calc(100vw-560px)] min-h-[calc(100vh-19.2rem)] max-h-[calc(100vh-19.2rem)] overflow-auto flex flex-col-reverse cursor-pointer">
+        <div className="min-w-[calc(100vw-560px)] min-h-[calc(100vh-19.2rem)] max-h-[calc(100vh-19.2rem)] overflow-auto flex flex-col-reverse cursor-pointer">
             {
                 isTyping?.show ? (
                     isTyping?.chatId === chatId ? (

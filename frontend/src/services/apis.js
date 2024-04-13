@@ -4,7 +4,10 @@ const BASE_URL = 'http://localhost:4000/api/v1'
 export const Auth = {
     login: BASE_URL + '/users/login',
     signup: BASE_URL + '/users/signup',
-    sendOtp: BASE_URL + '/users/verify-email'
+    sendOtp: BASE_URL + '/users/verify-email',
+    forgetPasswordToken : BASE_URL + '/users/resetpasswordtoken',
+    resetPassword: BASE_URL + '/users/resetpassword',
+    logout:BASE_URL + '/profile/logouthandler'
 }
 
 export const SearchUser = {

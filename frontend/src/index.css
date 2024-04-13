@@ -607,3 +607,21 @@ h4 {
   height: 260px;
   margin-left: 40px;
 }
+
+@media screen and (max-width: 640px) {
+  .list {
+    color: whitesmoke;
+    font-size: 14px;
+    padding: 0 !important;
+    width: 100%;
+    font-family: courier, monospace;
+  }
+
+  .list li {
+    list-style: none;
+    text-indent: 0px;
+    height: auto;
+    padding: 10px;
+    text-transform: capitalize;
+  }
+}

@@ -1,8 +1,11 @@
 import { useNavigate } from "react-router-dom";
+import { setShowChat } from "../../../../slices/conversationSlice";
+import { useDispatch } from "react-redux";
 
 
 function SideBarUsers({data,active,setActive}){
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     
 
     return (
@@ -11,6 +14,7 @@ function SideBarUsers({data,active,setActive}){
             onClick={()=>{
             setActive(data._id)
             navigate(`/chat/${data._id}/group/${false}/user/${data.users[0]._id}`)
+            dispatch(setShowChat(false))
             }}  >
                 <img 
                 src={data.users[0].profilepic}

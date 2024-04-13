@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { menuLinks } from "../../../Utils/Data";
 import Chats from "./Chats";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchAllChats } from "../../../services/Operations/chatOperation";
 import Groups from "./Groups";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { IoIosArrowDropup } from "react-icons/io";
+import { IoIosArrowDropdown } from "react-icons/io";
+import { setShowChat } from "../../../slices/conversationSlice";
 
 function Sidebar({fullScreen=false}){
     const [menu,setMenu] = useState('Chats');
@@ -16,7 +19,10 @@ function Sidebar({fullScreen=false}){
     const [loading,setLoading] = useState(false);
     const location = useLocation();
 
+    const {showChat} = useSelector((state)=>state.conversation);
+
     const {groupStatus} = useParams();
+    const dispatch = useDispatch();
     
     useEffect(()=>{
         if(groupStatus === 'true')
@@ -47,26 +53,38 @@ function Sidebar({fullScreen=false}){
     },[render])
 
     return(
-        <div className="min-w-[400px] min-h-[calc(100vh-7.0rem)] bg-orange-200 m-4 border-2 border-r-richblack-900 flex flex-col gap-2 mr-0"
-        >
-            <div className="flex justify-around items-center p-3 bg-richblack-800 shadow-[0px_0px_10px_5px] shadow-black">
+        <div className="relative">
+            <div className="sm:hidden w-full flex items-center justify-center bg-orange-200 min-h-[40px] rounded-full gap-2 font-semibold cursor-pointer"
+            onClick={()=>dispatch(setShowChat(!showChat))}
+            >
+                show Chats
                 {
-                    menuLinks.map((link)=>(
-                        <div key={link.id}
-                        onClick={()=>{setMenu(link.name)
-                        // navigate('/');
-                        }}
-                        className={`text-lg font-semibold ${menu === link.name ? " underline text-yellow-50" : "text-richblack-25"} cursor-pointer`}
-                        >
-                            {link.name}
-                        </div>
-                    ))
+                    showChat ?  (<IoIosArrowDropdown 
+                    className="font-semibold"
+                    />) : (<div className="font-bold"><IoIosArrowDropup /></div>)
                 }
             </div>
+            <div className={`min-w-[100vw] sm:min-w-[400px] min-h-[calc(100vh-6.9rem)] bg-orange-200 mt-1 sm:mt-4 sm:m-4 border-2 border-r-richblack-900 flex-col gap-2 mr-0 ${showChat ? "flex absolute sm:static" : "hidden sm:flex"}`}
+            >
+                <div className="flex justify-around items-center p-3 bg-richblack-800 shadow-[0px_0px_10px_5px] shadow-black">
+                    {
+                        menuLinks.map((link)=>(
+                            <div key={link.id}
+                            onClick={()=>{setMenu(link.name)
+                            // navigate('/');
+                            }}
+                            className={`text-lg font-semibold ${menu === link.name ? " underline text-yellow-50" : "text-richblack-25"} cursor-pointer`}
+                            >
+                                {link.name}
+                            </div>
+                        ))
+                    }
+                </div>
 
-            {
-                menu === 'Chats' ? (<Chats data={chatData} loading={loading}/>) : menu === 'Groups'?(<Groups data={groupData} loading={loading}/>):("")
-            }
+                {
+                    menu === 'Chats' ? (<Chats data={chatData} loading={loading}/>) : menu === 'Groups'?(<Groups data={groupData} loading={loading}/>):("")
+                }
+            </div>
         </div>
     )
 }

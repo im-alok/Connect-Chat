@@ -88,3 +88,50 @@ export function userLogin({username,password},navigate){
 
     }
 }
+
+export function sendForgotPasswordToken(email,setEmailSent){
+    return async(dispatch)=>{
+        dispatch(setLoading(true));
+        const toastId = toast.loading('Loading...');
+        try {
+            const response = await apiConnector("POST",Auth.forgetPasswordToken,{
+                email:email
+            })
+            if(!response.data.success){
+                throw new Error(response.data.message);
+            }
+            setEmailSent(true);
+            toast.success(response.data.message);
+        } catch (error) {
+            toast.error(error.response.data.message)
+        }
+        dispatch(setLoading(false));
+        toast.dismiss(toastId);
+    }
+}
+
+export function resetPassword({password,confirmPassword},token,navigate){
+    return async(dispatch)=>{
+        dispatch(setLoading(true));
+        const toastId = toast.loading("Loading...");
+        try {
+            
+            const response = await apiConnector("PUT",Auth.resetPassword,{
+                newPassword:password,
+                confirmNewPassword:confirmPassword,
+                token:token
+            })
+            if(!response.data.success){
+                throw new Error(response.data.message);
+            }
+            toast.success(response.data.message);
+            navigate('/login');
+
+        } catch (error) {
+            toast.error(error.response.data.message);
+        }
+        toast.dismiss(toastId);
+        dispatch(setLoading(false));
+    }
+
+}

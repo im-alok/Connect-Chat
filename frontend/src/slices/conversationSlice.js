@@ -4,7 +4,8 @@ const initialState = {
     showCreateGroupField :false,
     conversationLoading:false,
     socketConnected:false,
-    notificationDetails:[]
+    notificationDetails:[],
+    showChat:true,
 
 }
 
@@ -23,9 +24,12 @@ const conversationSlice = createSlice({
         },
         setNotificationDetails(state,value){
             state.notificationDetails.push(value.payload)
+        },
+        setShowChat(state,value){
+            state.showChat = value.payload
         }
     }
 })
 
-export const {setShowCreateGroupField,setConversationLoading,setSocketConnected,setNotificationDetails} = conversationSlice.actions;
+export const {setShowCreateGroupField,setConversationLoading,setSocketConnected,setNotificationDetails,setShowChat} = conversationSlice.actions;
 export default conversationSlice.reducer;

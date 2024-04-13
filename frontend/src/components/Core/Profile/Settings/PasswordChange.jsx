@@ -113,7 +113,7 @@ function PasswordChange(){
                                             name="newPassword"
                                             id="newPassword"
                                             placeholder="enter your password"
-                                            className="form-style w-fit"
+                                            className="form-style sm:w-fit w-[110%]"
                                             {...register('newPassword',
                                                 {
                                                     required:{
@@ -148,7 +148,7 @@ function PasswordChange(){
                                             name="confirmNewPassword"
                                             id="newPassconfirmNewPasswordword"
                                             placeholder="re-enter your password"
-                                            className="form-style"
+                                            className="form-style sm:w-full w-[110%]"
                                             {...register('confirmNewPassword',
                                                 {
                                                     required:{

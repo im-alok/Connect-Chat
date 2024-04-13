@@ -151,7 +151,7 @@ function SendMessage({conversation,setConversation}){
                 type='text'
                 placeholder='send message'
                 {...register('sendMessage')}
-                className='form-style w-[94%]'
+                className='form-style w-[80%] sm:w-[94%]'
                 onKeyDown={(e)=>keyDownHandler(e)}
                 onChange={(e)=>typingHandler(e)}
                 />

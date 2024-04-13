@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import CreateGroupPage from "./CreateGroupPage";
 import { useDispatch, useSelector } from "react-redux";
-import { setConversationLoading, setShowCreateGroupField } from "../../../slices/conversationSlice";
+import { setConversationLoading, setShowChat, setShowCreateGroupField } from "../../../slices/conversationSlice";
 import { getGroupDetails } from "../../../services/Operations/userOperation";
 
 function Groups({data,loading}){
@@ -44,6 +44,7 @@ function Groups({data,loading}){
                                     onClick={()=>{
                                         setActive(group._id)
                                         navigate(`/chat/${group._id}/group/${true}/user/${null}`)
+                                        dispatch(setShowChat(false))
                                     }}  
                                     >
                                         <img 

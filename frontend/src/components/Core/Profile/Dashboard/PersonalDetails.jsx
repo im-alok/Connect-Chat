@@ -6,13 +6,13 @@ function PersonalDetails(){
     // console.log(user)
 
     return(
-        <div className="notebook">
-            <h4>Personal Details :</h4>
+        <div className="notebook ">
+            <h4 className="sm:text-4xl text-3xl">Personal Details :</h4>
 
-            <div class="lines"></div>
+            <div class="lines hidden sm:block"></div>
 
             <ul class="list">
-                <li><span>Email : </span><span className="lowercase">{user.email}</span></li>
+                <li><span className="">Email : </span><span className="lowercase">{user.email}</span></li>
                 <li><span>username : </span><span className="lowercase">{user.username}</span></li>
                 <li><span>Date of Birth : </span><span className="lowercase">{dateFormatter(user.additionalDetails.dob) || "dd/mm/yyyy"}</span></li>
                 <li><span>Gender : </span><span className="">{user.additionalDetails.gender || "M/F"}</span></li>
