@@ -103,6 +103,7 @@ export function sendForgotPasswordToken(email,setEmailSent){
             setEmailSent(true);
             toast.success(response.data.message);
         } catch (error) {
+            console.log(error);
             toast.error(error.response.data.message)
         }
         dispatch(setLoading(false));

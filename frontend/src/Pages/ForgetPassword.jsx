@@ -18,19 +18,19 @@ function ForgotPassword(){
         dispatch(sendForgotPasswordToken(email,setEmailSent));
     }
     return(
-        <div className="mt-10 sm:mt-0 mx-auto w-11/12 bg-richblue-900 min-w-full min-h-[100vh]">
+        <div className="p-10 sm:p-0 sm:mt-0 mx-auto w-11/12 bg-richblue-900 min-w-full min-h-[100vh]">
 
             <div className="sm:h-[500px] flex  justify-center items-center">
                 {
                     loading?(<div className="text-richblack-25">Loading...</div>)
                     :(
                         <div className="flex flex-col gap-5  sm:w-4/12">
-                            <h1 className="  font-semibold text-3xl text-richblack-5">
+                            <h1 className="  font-semibold text-2xl sm:text-3xl text-richblack-5">
                                 {
                                     !emailSent ? "Reset Your Password" : "Check Email"
                                 }
                             </h1>
-                            <div className="  text-lg font-medium text-richblack-100 w-[90%]">
+                            <div className="text-base  sm:text-lg font-medium text-richblack-100 sm:w-[90%] w-full">
                                 {
                                     !emailSent?(<p>Have no fear. We’ll email you instructions to reset your password. If you dont have access to your email we can try account recovery</p>)
                                     :(<p>We have sent the reset email to

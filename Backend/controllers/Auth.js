@@ -81,6 +81,8 @@ exports.login = async(req,res)=>{
             })
         }
         //check whether the user is register or not
+        
+
         const userDetails = await user.findOne({username:username}).populate('additionalDetails');
 
         if(!userDetails){
@@ -138,6 +140,22 @@ exports.signup = async(req,res)=>{
             return res.status(404).json({
                 success:false,
                 message:"all fields are required"
+            })
+        }
+
+        if(password.length < 8){
+            return res.status(400).json({
+                success:false,
+                message:'password must be of 8 digit'
+            })
+        }
+
+        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        
+        if(!regex.test(password)){
+            return res.status(400).json({
+                success:false,
+                message:'Password must have 1 lowercase, 1 uppercase, 1 Special Character and of minimum 8 digit'
             })
         }
 

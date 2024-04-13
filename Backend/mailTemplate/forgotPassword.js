@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+const forgotPassword = (link) => {
+	return `<!DOCTYPE html>
 	<html>
 	
 	<head>
@@ -104,4 +105,6 @@
 		</div>
 	</body>
 	
-	</html>
+	</html>`;
+};
+module.exports = forgotPassword;

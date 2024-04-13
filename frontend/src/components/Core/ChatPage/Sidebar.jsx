@@ -54,7 +54,7 @@ function Sidebar({fullScreen=false}){
 
     return(
         <div className="relative">
-            <div className="sm:hidden w-full flex items-center justify-center bg-orange-200 min-h-[40px] rounded-full gap-2 font-semibold cursor-pointer"
+            <div className="m-1 sm:hidden w-[95%] mx-auto flex items-center justify-center bg-orange-200 min-h-[40px] rounded-full gap-2 font-semibold cursor-pointer"
             onClick={()=>dispatch(setShowChat(!showChat))}
             >
                 show Chats
@@ -64,9 +64,9 @@ function Sidebar({fullScreen=false}){
                     />) : (<div className="font-bold"><IoIosArrowDropup /></div>)
                 }
             </div>
-            <div className={`min-w-[100vw] sm:min-w-[400px] min-h-[calc(100vh-6.9rem)] bg-orange-200 mt-1 sm:mt-4 sm:m-4 border-2 border-r-richblack-900 flex-col gap-2 mr-0 ${showChat ? "flex absolute sm:static" : "hidden sm:flex"}`}
+            <div className={`min-w-[100vw] sm:min-w-[400px] min-h-[calc(100vh-6.9rem)] max-h-[calc(100vh-6.9rem)]  overflow-auto bg-orange-200 mt-1 sm:mt-4 sm:m-4 border-2 border-r-richblack-900 flex-col gap-2 mr-0 ${showChat ? "flex absolute sm:static" : "hidden sm:flex"}`}
             >
-                <div className="flex justify-around items-center p-3 bg-richblack-800 shadow-[0px_0px_10px_5px] shadow-black">
+                <div className="fixed min-w-[100vw] sm:min-w-[400px] flex justify-around items-center p-3 bg-richblack-800 shadow-[0px_0px_10px_5px] shadow-black">
                     {
                         menuLinks.map((link)=>(
                             <div key={link.id}
@@ -81,9 +81,11 @@ function Sidebar({fullScreen=false}){
                     }
                 </div>
 
-                {
-                    menu === 'Chats' ? (<Chats data={chatData} loading={loading}/>) : menu === 'Groups'?(<Groups data={groupData} loading={loading}/>):("")
-                }
+                <div className="mt-16">
+                    {
+                        menu === 'Chats' ? (<Chats data={chatData} loading={loading}/>) : menu === 'Groups'?(<Groups data={groupData} loading={loading}/>):("")
+                    }
+                </div>
             </div>
         </div>
     )

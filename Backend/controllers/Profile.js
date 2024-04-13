@@ -75,6 +75,22 @@ exports.changePassword = async(req,res)=>{
             })
         }
 
+        if(password.length < 8){
+            return res.status(400).json({
+                success:false,
+                message:'password must be of 8 digit'
+            })
+        }
+
+        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        
+        if(!regex.test(newPassword)){
+            return res.status(400).json({
+                success:false,
+                message:'Password must have 1 lowercase, 1 uppercase, 1 Special Character and of minimum 8 digit'
+            })
+        }
+
         //else hash the password and update the db
         const hashPassword = await bcrypt.hash(newPassword,10);
 

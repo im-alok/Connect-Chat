@@ -64,7 +64,7 @@ function Template({image,formType,customClasses}){
                     }
                 </div>
 
-                <div className=' flex justify-center items-center bg-[#c21515] text-richblack-5 rounded-full p-2  font-semibold cursor-pointer active:scale-95 mb-8 w-10/12 sm:w-fit sm:px-20'>
+                {/* <div className=' flex justify-center items-center bg-[#c21515] text-richblack-5 rounded-full p-2  font-semibold cursor-pointer active:scale-95 mb-8 w-10/12 sm:w-fit sm:px-20'>
                     <div
                     className='flex gap-1 items-center'
                     >
@@ -77,7 +77,7 @@ function Template({image,formType,customClasses}){
                             {" "}with google
                             
                         </div>
-                </div>
+                </div> */}
             </div>
             
 

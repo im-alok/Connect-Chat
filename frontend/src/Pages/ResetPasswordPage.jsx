@@ -41,11 +41,11 @@ function ResetPasswordPage(){
 
 
     return(
-        <div className="mx-auto w-full min-h-[100vh] bg-richblue-900">
+        <div className="sm:p-0 p-10 mx-auto w-full min-h-[100vh] bg-richblue-900">
             <div className="flex items-center justify-center h-[500px]">
                 <div className="flex flex-col gap-3 w-fit">
-                    <h1 className="text-3xl font-semibold text-richblack-5   ">Choose new Password</h1>
-                    <p className="text-lg text-richblack-100 w-[90%]">Almost done. Enter your new password and youre all set.</p>
+                    <h1 className="text-2xl sm:text-3xl font-semibold text-richblack-5   ">Choose new Password</h1>
+                    <p className="text-base sm:text-lg text-richblack-100 w-[90%]">Almost done. Enter your new password and youre all set.</p>
 
                     <div className="flex flex-col">
 
@@ -102,7 +102,7 @@ function ResetPasswordPage(){
                         </form>
                     </div>
                     <Link to={"/login"}>
-                        <div className="flex gap-2 font-medium text-lg items-center text-richblack-5">
+                        <div className="flex gap-2 font-medium text-base sm:text-lg items-center text-richblack-5">
                             <FaArrowLeftLong />
                             Back to Login
                         </div>
