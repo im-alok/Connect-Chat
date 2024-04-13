@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:4000/api/v1'
+const BASE_URL = 'https://connect-chat-im-aloks-projects.vercel.app'
 // console.log(BASE_URL);
 
 export const Auth = {
