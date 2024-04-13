@@ -5,15 +5,13 @@ const messageSchema = new mongoose.Schema({
         ref:"User",
         required:true,
     },
-    receiverId:[
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref:"User",
-            required:true,
-        }
-    ],
     message:{
         type:String
+    },
+    ChatId:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref:"IndividualChat",
+        default:null
     },
     groupId:{
         type: mongoose.Schema.Types.ObjectId,
@@ -24,4 +22,4 @@ const messageSchema = new mongoose.Schema({
 
 },{timestamps:true});
 
-exports.module = mongoose.model('Message',messageSchema);
+module.exports = mongoose.model('Message',messageSchema);

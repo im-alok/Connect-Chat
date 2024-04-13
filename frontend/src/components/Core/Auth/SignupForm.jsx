@@ -5,12 +5,13 @@ import { IoEye } from "react-icons/io5";
 import { IoEyeOff } from "react-icons/io5";
 import { sendOTP } from "../../../services/Operations/authOperation";
 import { useNavigate } from "react-router-dom";
-import {useDispatch} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import { setSignUpFormData } from "../../../slices/authSlice";
 
 function SignupForm(){
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const {loading} = useSelector((state)=>state.auth);
 
     const {
         register,
@@ -44,6 +45,7 @@ function SignupForm(){
                     type="text"
                     placeholder="enter your name"
                     {...register('name',{required:true})}
+                    disabled={loading}
                     />
                     {
                         errors.name && (<span className="text-pink-200 text-xs">Please enter your name</span>)
@@ -63,6 +65,7 @@ function SignupForm(){
                         placeholder='enter your username'
                         {...register('username',{required:true})}
                         className='form-style '
+                        disabled={loading}
                         />
                         {
                             errors.username && (<span className='text-pink-200 text-xs'>username is required</span>)
@@ -82,6 +85,7 @@ function SignupForm(){
                         placeholder='enter your email'
                         {...register('email',{required:true})}
                         className='form-style'
+                        disabled={loading}
                         />
                         {
                             errors.email && (<span className='text-pink-200 text-xs'>email is required</span>)
@@ -102,6 +106,7 @@ function SignupForm(){
                         placeholder='enter your password'
                         {...register('password',{required:true})}
                         className='form-style'
+                        disabled={loading}
                         />
                         <div
                         onClick={()=>setShowPassword(prev =>!prev)}
@@ -126,6 +131,7 @@ function SignupForm(){
                         placeholder='re-enter your password'
                         {...register('confirmpassword',{required:true})}
                         className='form-style'
+                        disabled={loading}
                         />
                         <div
                         onClick={()=>setShowConfirmPassword(prev =>!prev)}
@@ -145,6 +151,7 @@ function SignupForm(){
                 <button className='mt-5 sm:w-fit w-full sm:px-32 p-2 rounded-full bg-yellow-50 font-semibold self-center
                     hover:bg-yellow-200 active:scale-95'
                     type='submit'
+                    disabled={loading}
                     >
                         <div className='flex items-center gap-1 justify-center'>
                             Sign up

@@ -7,7 +7,8 @@ function OpenRoute({children}){
     if(token === null)
         return children;
     else
-    return <Navigate to={'/thankyou'}/>
+      return <Navigate to={'/'}/>
+
 }
 
 export default OpenRoute;

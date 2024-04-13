@@ -4,7 +4,7 @@ const groupSchema = new mongoose.Schema({
         type:String,
         required:true,
     },
-    members:[{
+    users:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:'User'
     }],
@@ -12,6 +12,14 @@ const groupSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'User'
     },
+    profilepic:{
+        type:String
+    },
+    latestMessage:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Message",
+        default:null
+    }
 },{timestamps:true})
 
 module.exports = mongoose.model('Group',groupSchema);
