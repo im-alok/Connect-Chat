@@ -204,3 +204,38 @@ exports.uploadGroupImage = async(req,res) =>{
         })
     }
 }
+
+exports.LogOutHandler = async(req,res)=>{
+    try {
+        const userId = req.user.id;
+        if(!userId){
+            return res.status(400).jsjon({
+                success:false,
+                message:'user id is not founds'
+            })
+        }
+
+        //finding user details
+        const userDetails = await user.findById(userId);
+        if(!userDetails){
+            return res.status(404).json({
+                success:false,
+                message:'userDetails not found'
+            })
+        }
+
+        const updateUserStatus = await user.findByIdAndUpdate(userId,{status:false});
+
+        return res.status(200).json({
+            success:true,
+            message:'Log out successfully'
+        })
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success:false,
+            message:'someting went wrong'
+        })
+    }
+}

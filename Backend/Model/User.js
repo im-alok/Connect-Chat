@@ -27,6 +27,16 @@ const userSchema = new mongoose.Schema({
     additionalDetails:{
         type: mongoose.Schema.Types.ObjectId,
         ref:"Profile"
+    },
+    resetPasswordToken:{
+        type:String
+    },
+    tokenExpiresIn:{
+        type:Date,
+    },
+    status:{
+        type:Boolean,
+        default:true
     }
 
 },{timestamps:true});
