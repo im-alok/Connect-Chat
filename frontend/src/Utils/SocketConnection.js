@@ -1,6 +1,6 @@
 import { io } from "socket.io-client"
 
 export function socketConnection(){
-    const ENDPOINTS = "http://localhost:4000"
+    const ENDPOINTS = "https://connect-chat-369l.onrender.com"
     return io(ENDPOINTS);
 }
