@@ -57,7 +57,7 @@ app.get('/', (req, res) => {
 const io = require('socket.io')(server, {
     pingTimeOut: 60000,
     cors: {
-        origin: process.env.ORIGIN
+        origin: process.env.ORIGIN,
     }
 })
 // console.log(io);

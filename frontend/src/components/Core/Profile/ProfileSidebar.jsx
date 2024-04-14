@@ -7,7 +7,7 @@ function ProfileSidebar(){
 
     return(
         <div className=" sm:w-[7%] bg-black-600 rounded-t-[2rem]">
-            <div className="flex flex-row sm:flex-col items-center justify-between sm:h-[720px] sm:p-0 p-5 ">
+            <div className="flex flex-row sm:flex-col items-center justify-between sm:h-[710px] sm:p-0 p-5 ">
                 <div className="flex flex-row sm:flex-col gap-8 sm:gap-24 sm:mt-20 items-center">
                     <div className={`flex flex-row sm:flex-col gap-8 `}>
                         {

@@ -64,9 +64,10 @@ function Sidebar({fullScreen=false}){
                     />) : (<div className="font-bold"><IoIosArrowDropup /></div>)
                 }
             </div>
-            <div className={`min-w-[100vw] sm:min-w-[400px] min-h-[calc(100vh-6.9rem)] max-h-[calc(100vh-6.9rem)]  overflow-auto bg-orange-200 mt-1 sm:mt-4 sm:m-4 border-2 border-r-richblack-900 flex-col gap-2 mr-0 ${showChat ? "flex absolute sm:static" : "hidden sm:flex"}`}
+            
+            <div className={`min-w-[100vw] sm:min-w-[400px]   bg-orange-200 mt-1 sm:mt-4 sm:m-4 border-2 border-r-richblack-900 flex-col gap-2 mr-0 ${showChat ? "flex absolute sm:static" : "hidden sm:flex"} ${fullScreen ? "h-[calc(100vh-9.5rem)]" : 'h-[calc(100vh-7.0rem)]'}`}
             >
-                <div className="fixed min-w-[100vw] sm:min-w-[400px] flex justify-around items-center p-3 bg-richblack-800 shadow-[0px_0px_10px_5px] shadow-black">
+                <div className={`fixed min-w-[100vw] sm:min-w-[400px] flex justify-around items-center p-3 bg-richblack-800 shadow-[0px_0px_10px_5px] shadow-black ${fullScreen ? "w-[85.5%]" :""}`}>
                     {
                         menuLinks.map((link)=>(
                             <div key={link.id}
@@ -81,7 +82,7 @@ function Sidebar({fullScreen=false}){
                     }
                 </div>
 
-                <div className="mt-16">
+                <div className={`mt-20 overflow-auto `}>
                     {
                         menu === 'Chats' ? (<Chats data={chatData} loading={loading}/>) : menu === 'Groups'?(<Groups data={groupData} loading={loading}/>):("")
                     }

@@ -14,7 +14,7 @@ function Dashboard(){
             
             <div className="w-full sm:w-[calc(100%-7%)] p-2  sm:p-10 bg-black-900">
                 <div className="sm:mt-0 mt-5 text-white flex flex-row items-center justify-between">
-                    <h2 className="sm:text-4xl font-semibold items-center justify-between capitalize text-xl ">{location.pathname.split('/').join(" ")}</h2>
+                    <h2 className="sm:text-4xl font-semibold items-center justify-between capitalize text-lg ">{location.pathname.split('/').join(" ")}</h2>
 
                     <div className="flex gap-5 sm:gap-7">
                         <div className="font-semibold text-sm sm:px-3 px-2 sm:py-2 flex justify-center items-center text-richblack-900 bg-yellow-50 rounded-lg cursor-pointer"
