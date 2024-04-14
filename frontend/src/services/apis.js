@@ -1,4 +1,4 @@
-const BASE_URL = 'https://connect-chat-im-aloks-projects.vercel.app'
+const BASE_URL = 'https://connect-chat-369l.onrender.com/api/v1'
 // console.log(BASE_URL);
 
 export const Auth = {
