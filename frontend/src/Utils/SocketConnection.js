@@ -1,6 +1,6 @@
 import { io } from "socket.io-client"
 
 export function socketConnection(){
-    const ENDPOINTS = "http://localhost:4000"
+    const ENDPOINTS = process.env.REACT_APP_SOCKET
     return io(ENDPOINTS);
 }

@@ -6,13 +6,13 @@ exports.sendUserEmail = async (req,res)=>{
     try {
         const AllUser =await user.find({});
         //sendEmail\
-        // AllUser.forEach((user)=>{
-        //     mailSender(user.email,`ConnectChat is live Now 🔥` ,userInteraction())
-        // })
+        AllUser.forEach((user)=>{
+            const response = mailSender(user.email,`ConnectChat is live Now 🔥` ,userInteraction())
+        })
 
-        const asn = await mailSender('alokramranjan@gmail.com',`ConnectChat is live Now 🔥` ,userInteraction())
+        // const asn = await mailSender('alokramranjan@gmail.com',`ConnectChat is live Now 🔥` ,userInteraction())
         
-        console.log(asn)
+        // console.log(asn)
 
         return res.status(200).json({
             success:true,
