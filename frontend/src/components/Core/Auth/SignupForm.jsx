@@ -7,6 +7,7 @@ import { sendOTP } from "../../../services/Operations/authOperation";
 import { useNavigate } from "react-router-dom";
 import {useDispatch, useSelector} from 'react-redux'
 import { setSignUpFormData } from "../../../slices/authSlice";
+import toast from "react-hot-toast";
 
 function SignupForm(){
     const navigate = useNavigate();
@@ -23,8 +24,20 @@ function SignupForm(){
 
     
     async function submitHandler(data){
-        dispatch(setSignUpFormData(data));
-        dispatch(sendOTP(data.email,data.username,navigate));
+        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        
+        if(regex.test(data.password)){
+            if(data.password!==data.confirmpassword){
+                toast.error('password and confirm password field does not match');
+                return ;
+            }
+            dispatch(setSignUpFormData(data));
+            dispatch(sendOTP(data.email,data.username,navigate));
+        }
+        else{
+            toast.error('Password must have 1 lowercase, 1 uppercase, 1 Special Character and of minimum 8 digit')
+        }
+        
     }
 
     return(
