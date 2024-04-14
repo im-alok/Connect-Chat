@@ -10,6 +10,7 @@ const searchRoute = require('./Route/searchRoutes');
 const profileRoute = require('./Route/profileRoute');
 const fileUpload = require('express-fileupload');
 const { cloudinaryConnect } = require('./config/cloudinary');
+const { sendUserEmail } = require('./controllers/UserInteraction');
 
 //adding middlewares to get the data
 require('dotenv').config();
@@ -39,6 +40,7 @@ app.use('/api/v1/connect', chatRoutes);
 app.use('/api/v1/message', messageRoute);
 app.use('/api/v1/search',searchRoute);
 app.use('/api/v1/profile',profileRoute);
+app.get('/api/v1/emailNewsLetter',sendUserEmail);
 
 //listening to the port
 const server = app.listen(4000, () => {

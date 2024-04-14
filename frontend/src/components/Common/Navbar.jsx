@@ -35,7 +35,7 @@ function Navbar(){
     }
 
     return(
-        <div className="flex justify-between w-screen min-h-[4.2rem] sm:min-h-[4.9rem] bg-orange-200 sm:px-10 px-2 border-b-2 border-richblack-900 items-center">
+        <div className="flex justify-between w-screen min-h-[3.8rem] sm:min-h-[4.9rem] bg-orange-200 sm:px-10 px-2 border-b-2 border-richblack-900 items-center">
 
             <div>
                 {
