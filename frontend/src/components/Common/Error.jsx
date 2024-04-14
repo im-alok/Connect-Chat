@@ -19,7 +19,7 @@ function Error(){
                     
                     <p>the page you are looking for not avaible!</p>
                     
-                    <a href="" class="link_404">Go to Home</a>
+                    <a href="https://connect-chat-im-aloks-projects.vercel.app/" class="link_404">Go to Home</a>
                 </div>
                     </div>
                     </div>
